@@ -1004,4 +1004,5 @@ else if (typeof window.attachEvent != 'undefined') {
   }
 }
 
-export default AMTparseAMtoTeX;
+
+module.exports = AMTparseAMtoTeX;

@@ -46,9 +46,6 @@
 
 	"use strict";
 
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
 	var config = {
 	  translateOnLoad: true, //true to autotranslate
 	  mathcolor: "", // defaults to back, or specify any other color
@@ -834,7 +831,7 @@
 	  }
 	}
 
-	exports.default = AMTparseAMtoTeX;
+	module.exports = AMTparseAMtoTeX;
 
 /***/ }
 /******/ ]);
