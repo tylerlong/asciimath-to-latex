@@ -476,6 +476,7 @@ Each terminal symbol is translated into a corresponding mathml node.*/
 var AMnestingDepth, AMpreviousSymbol, AMcurrentSymbol;
 
 function AMTgetTeXsymbol(symb) {
+  let pre = '';
   if (typeof symb.val == "boolean" && symb.val) {
     pre = '';
   } else {

@@ -1,10 +1,12 @@
 {
   "name": "asciimath-to-latex",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "AsciiMath to LaTex converter",
   "main": "index.bundle.js",
   "scripts": {
-    "dev": "webpack --progress --colors --watch"
+    "dev": "webpack --progress --colors --watch",
+    "dev-server": "webpack-dev-server --progress --colors --port 8081",
+    "open": "open http://localhost:8081/webpack-dev-server"
   },
   "repository": {
     "type": "git",
@@ -21,6 +23,7 @@
     "babel-loader": "^6.2.8",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-stage-0": "^6.16.0",
-    "webpack": "^1.13.3"
+    "webpack": "^1.13.3",
+    "webpack-dev-server": "^1.16.2"
   }
 }
