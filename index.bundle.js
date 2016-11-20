@@ -1,1 +1,840 @@
-!function(t){function e(p){if(u[p])return u[p].exports;var n=u[p]={exports:{},id:p,loaded:!1};return t[p].call(n.exports,n,n.exports,e),n.loaded=!0,n.exports}var u={};return e.m=t,e.c=u,e.p="",e(0)}([function(t,e){"use strict";function u(t,e){return t.input>e.input?1:-1}function p(){var t,e=U.length;for(t=0;t<e;t++)!U[t].tex||"boolean"==typeof U[t].notexcopy&&U[t].notexcopy||U.push({input:U[t].tex,tag:U[t].tag,output:U[t].output,ttype:U[t].ttype,acc:U[t].acc||!1});n()}function n(){var t;for(U.sort(u),t=0;t<U.length;t++)X[t]=U[t].input}function o(t,e){var u;u="\\"==t.charAt(e)&&"\\"!=t.charAt(e+1)&&" "!=t.charAt(e+1)?t.slice(e+1):t.slice(e);for(var p=0;p<u.length&&u.charCodeAt(p)<=32;p+=1);return u.slice(p)}function a(t,e,u){if(0==u){var p,n;for(u=-1,p=t.length;u+1<p;)n=u+p>>1,t[n]<e?u=n:p=n;return p}for(var o=u;o<t.length&&t[o]<e;o++);return o}function l(t){for(var e,u,p,n=0,o=0,l="",i=!0,r=1;r<=t.length&&i;r++)u=t.slice(0,r),o=n,n=a(X,u,o),n<X.length&&t.slice(0,X[n].length)==X[n]&&(l=X[n],e=n,r=l.length),i=n<X.length&&t.slice(0,X[n].length)>=X[n];if(A=w,""!=l)return w=U[e].ttype,U[e];w=N,n=1,u=t.slice(0,1);for(var m=!0;"0"<=u&&u<="9"&&n<=t.length;)u=t.slice(n,n+1),n++;if(u==M.decimalsign&&(u=t.slice(n,n+1),"0"<=u&&u<="9"))for(m=!1,n++;"0"<=u&&u<="9"&&n<=t.length;)u=t.slice(n,n+1),n++;return m&&n>1||n>2?(u=t.slice(0,n-1),p="mn"):(n=2,u=t.slice(0,1),p=("A">u||u>"Z")&&("a">u||u>"z")?"mo":"mi"),"-"==u&&A==k?(w=k,{input:u,tag:p,output:u,ttype:q,func:!0,val:!0}):{input:u,tag:p,output:u,ttype:N,val:!0}}function i(t){var e;if("{"==t.charAt(0)&&"}"==t.charAt(t.length-1)){var u=0;e=t.substr(1,5),"\\left"==e?(e=t.charAt(6),"("==e||"["==e||"{"==e?u=7:(e=t.substr(6,7),"\\lbrace"==e&&(u=13))):(e=t.charAt(1),"("!=e&&"["!=e||(u=2)),u>0&&(e=t.substr(t.length-8),"\\right)}"==e||"\\right]}"==e||"\\right.}"==e?(t="{"+t.substr(u),t=t.substr(0,t.length-8)+"}"):"\\rbrace}"==e&&(t="{"+t.substr(u),t=t.substr(0,t.length-14)+"}"))}return t}function r(t){var e="";return e="boolean"==typeof t.val&&t.val?"":"\\",null==t.tex?e+t.input:e+t.tex}function m(t){var e,u,p,n,a,g="";if(t=o(t,0),e=l(t),null==e||e.ttype==L&&b>0)return[null,t];switch(e.ttype==R&&(t=e.output+o(t,e.input.length),e=l(t)),e.ttype){case _:case N:t=o(t,e.input.length);var y=r(e);return"\\"==y.charAt(0)||"mo"==e.tag?[y,t]:["{"+y+"}",t];case C:b++,t=o(t,e.input.length),p=c(t,!0),b--;var x=0;return"\\right"==p[0].substr(0,6)&&(a=p[0].charAt(6),")"==a||"]"==a||"}"==a?x=6:"."==a?x=7:(a=p[0].substr(6,7),"\\rbrace"==a&&(x=13))),x>0?(p[0]=p[0].substr(x),u="boolean"==typeof e.invisible&&e.invisible?"{"+p[0]+"}":"{"+r(e)+p[0]+"}"):u="boolean"==typeof e.invisible&&e.invisible?"{\\left."+p[0]+"}":"{\\left"+r(e)+p[0]+"}",[u,p[1]];case S:return e!=F&&(t=o(t,e.input.length)),n="{"==t.charAt(0)?t.indexOf("}"):"("==t.charAt(0)?t.indexOf(")"):"["==t.charAt(0)?t.indexOf("]"):e==F?t.slice(1).indexOf('"')+1:0,n==-1&&(n=t.length),a=t.slice(1,n)," "==a.charAt(0)&&(g="\\ "),g+="\\text{"+a+"}"," "==a.charAt(a.length-1)&&(g+="\\ "),t=o(t,n+1),[g,t];case q:return t=o(t,e.input.length),p=m(t),null==p[0]?["{"+r(e)+"}",t]:"boolean"==typeof e.func&&e.func?(a=t.charAt(0),"^"==a||"_"==a||"/"==a||"|"==a||","==a||1==e.input.length&&e.input.match(/\w/)&&"("!=a?["{"+r(e)+"}",t]:(u="{"+r(e)+"{"+p[0]+"}}",[u,p[1]])):(p[0]=i(p[0]),"sqrt"==e.input?["\\sqrt{"+p[0]+"}",p[1]]:"cancel"==e.input?["\\cancel{"+p[0]+"}",p[1]]:"undefined"!=typeof e.rewriteleftright?["{\\left"+e.rewriteleftright[0]+p[0]+"\\right"+e.rewriteleftright[1]+"}",p[1]]:"boolean"==typeof e.acc&&e.acc?[r(e)+"{"+p[0]+"}",p[1]]:["{"+r(e)+"{"+p[0]+"}}",p[1]]);case E:if(t=o(t,e.input.length),p=m(t),null==p[0])return["{"+r(e)+"}",t];p[0]=i(p[0]);var s=m(p[1]);return null==s[0]?["{"+r(e)+"}",t]:(s[0]=i(s[0]),g="color"==e.input?"{\\color{"+p[0].replace(/[\{\}]/g,"")+"}"+s[0]+"}":"root"==e.input?"{\\sqrt["+p[0]+"]{"+s[0]+"}}":"{"+r(e)+"{"+p[0]+"}{"+s[0]+"}}",[g,s[1]]);case k:return t=o(t,e.input.length),[e.output,t];case T:return t=o(t,e.input.length),["{\\quad\\text{"+e.input+"}\\quad}",t];case O:b++,t=o(t,e.input.length),p=c(t,!1),b--;var a="";return a=p[0].charAt(p[0].length-1),"|"==a?(u="{\\left|"+p[0]+"}",[u,p[1]]):(u="{\\mid}",[u,t]);default:return t=o(t,e.input.length),["{"+r(e)+"}",t]}}function g(t){var e,u,p,n,a;if(t=o(t,0),u=l(t),a=m(t),n=a[0],t=a[1],e=l(t),e.ttype==k&&"/"!=e.input){if(t=o(t,e.input.length),a=m(t),null==a[0]?a[0]="{}":a[0]=i(a[0]),t=a[1],"_"==e.input)if(p=l(t),"^"==p.input){t=o(t,p.input.length);var r=m(t);r[0]=i(r[0]),t=r[1],n="{"+n,n+="_{"+a[0]+"}",n+="^{"+r[0]+"}",n+="}"}else n+="_{"+a[0]+"}";else n=n+"^{"+a[0]+"}";"undefined"!=typeof u.func&&u.func&&(p=l(t),p.ttype!=k&&p.ttype!=L&&(a=g(t),n="{"+n+a[0]+"}",t=a[1]))}return[n,t]}function c(t,e){var u,p,n,a,m="",c=!1;do t=o(t,0),n=g(t),p=n[0],t=n[1],u=l(t),u.ttype==k&&"/"==u.input?(t=o(t,u.input.length),n=g(t),null==n[0]?n[0]="{}":n[0]=i(n[0]),t=n[1],p=i(p),p="\\frac{"+p+"}",p+="{"+n[0]+"}",m+=p,u=l(t)):void 0!=p&&(m+=p);while((u.ttype!=L&&(u.ttype!=O||e)||0==b)&&null!=u&&""!=u.output);if(u.ttype==L||u.ttype==O){var y=m.length;if(y>2&&"{"==m.charAt(0)&&m.indexOf(",")>0){var x=m.charAt(y-2);if(")"==x||"]"==x){var s=m.charAt(6);if("("==s&&")"==x&&"}"!=u.output||"["==s&&"]"==x){var h="\\matrix{",d=new Array;d.push(0);var f=!0,v=0,A=[];A[0]=[0];var w=0,M=0;for(a=1;a<y-1;a++)m.charAt(a)==s&&v++,m.charAt(a)==x&&(v--,0==v&&","==m.charAt(a+2)&&"{"==m.charAt(a+3)&&(d.push(a+2),w=a+2,A[w]=[a+2])),"["!=m.charAt(a)&&"("!=m.charAt(a)&&"{"!=m.charAt(a)||M++,"]"!=m.charAt(a)&&")"!=m.charAt(a)&&"}"!=m.charAt(a)||M--,","==m.charAt(a)&&1==M&&A[w].push(a),M<0&&(w==a+1?a++:f=!1);d.push(y);var N=-1;if(0==v&&d.length>0&&f)for(a=0;a<d.length-1;a++){if(a>0&&(h+="\\\\"),0==a)if(1==A[d[a]].length)var q=[m.substr(d[a]+7,d[a+1]-d[a]-15)];else{for(var q=[m.substring(d[a]+7,A[d[a]][1])],E=2;E<A[d[a]].length;E++)q.push(m.substring(A[d[a]][E-1]+1,A[d[a]][E]));q.push(m.substring(A[d[a]][A[d[a]].length-1]+1,d[a+1]-8))}else if(1==A[d[a]].length)var q=[m.substr(d[a]+8,d[a+1]-d[a]-16)];else{for(var q=[m.substring(d[a]+8,A[d[a]][1])],E=2;E<A[d[a]].length;E++)q.push(m.substring(A[d[a]][E-1]+1,A[d[a]][E]));q.push(m.substring(A[d[a]][A[d[a]].length-1]+1,d[a+1]-8))}N>0&&q.length!=N?f=!1:N==-1&&(N=q.length),h+=q.join("&")}h+="}",f&&(m=h)}}}t=o(t,u.input.length),"boolean"==typeof u.invisible&&u.invisible?(m+="\\right.",c=!0):(p="\\right"+r(u),m+=p,c=!0)}return b>0&&!c&&(m+="\\right."),[m,t]}function y(t){return b=0,t=t.replace(/(&nbsp;|\u00a0|&#160;)/g,""),t=t.replace(/&gt;/g,">"),t=t.replace(/&lt;/g,"<"),null==t.match(/\S/)?"":c(t.replace(/^\s+/g,""),!1)[0]}function x(t){if(t=t.replace(/(&nbsp;|\u00a0|&#160;)/g,""),t=t.replace(/&gt;/g,">"),t=t.replace(/&lt;/g,"<"),null==t.match(/\S/))return document.createTextNode(" ");var e=y(t);"undefined"!=typeof mathbg&&"dark"==mathbg&&(e="\\reverse "+e),""!=M.mathcolor&&(e="\\"+M.mathcolor+e),e=M.displaystyle?"\\displaystyle"+e:"\\textstyle"+e,e=e.replace("$","\\$");var u=document.createElement("img");e="function"==typeof encodeURIComponent?encodeURIComponent(e):escape(e),u.src=AMTcgiloc+"?"+e,u.style.verticalAlign="middle",M.showasciiformulaonhover&&u.setAttribute("title",t.replace(/\s+/g," "));var p=document.createElement("span");return p.appendChild(u),p}function s(t,e){for(var u=document.createDocumentFragment(),p=!1,n=0;n<t.length;n++){if(p)u.appendChild(x(t[n]));else{var o=e?t[n].split("\n\n"):[t[n]];u.appendChild(document.createElement("span").appendChild(document.createTextNode(o[0])));for(var a=1;a<o.length;a++)u.appendChild(document.createElement("p")),u.appendChild(document.createElement("span").appendChild(document.createTextNode(o[a])))}p=!p}return u}function h(t,e){var u,p,n,o,a;if(0==t.childNodes.length){if(8==t.nodeType&&!e||"form"==t.parentNode.nodeName||"FORM"==t.parentNode.nodeName||"textarea"==t.parentNode.nodeName||"TEXTAREA"==t.parentNode.nodeName||"pre"==t.parentNode.nodeName||"PRE"==t.parentNode.nodeName)return 0;if(p=t.nodeValue,null!=p){for(p=p.replace(/\r\n\r\n/g,"\n\n"),M.doubleblankmathdelimiter&&(p=p.replace(/\x20\x20\./g," "+M.AMdelimiter1+"."),p=p.replace(/\x20\x20,/g," "+M.AMdelimiter1+","),p=p.replace(/\x20\x20/g," "+M.AMdelimiter1+" ")),p=p.replace(/\x20+/g," "),p=p.replace(/\s*\r\n/g," "),u=!1,M.AMusedelimiter2&&(p=p.replace(new RegExp(M.AMescape2,"g"),function(t){return u=!0,"AMescape2"})),p=p.replace(new RegExp(M.AMescape1,"g"),function(t){return u=!0,"AMescape1"}),M.AMusedelimiter2&&(p=p.replace(new RegExp(M.AMdelimiter2regexp,"g"),M.AMdelimiter1)),n=p.split(M.AMdelimiter1),a=0;a<n.length;a++)M.AMusedelimiter2?n[a]=n[a].replace(/AMescape2/g,M.AMdelimiter2).replace(/AMescape1/g,M.AMdelimiter1):n[a]=n[a].replace(/AMescape1/g,M.AMdelimiter1);if(n.length>1||u){o=s(n,8==t.nodeType);var l=o.childNodes.length;return t.parentNode.replaceChild(o,t),l-1}}}else if("math"!=t.nodeName)for(a=0;a<t.childNodes.length;a++)a+=h(t.childNodes[a],e);return 0}function d(t,e,u){var p,n;if(null!=u){p=document.getElementsByTagName("span");for(var o=0;o<p.length;o++)"AM"==p[o].className&&h(p[o],e)}else{try{n=t.innerHTML}catch(t){}null!=n&&n.indexOf(M.AMdelimiter1)==-1||h(t,e)}}function f(t){if(!G){G=!0;var e=document.getElementsByTagName("body")[0],u=document.getElementById(M.AMdocumentId);d(null!=u?u:e,!1,t)}}function v(){M.translateOnLoad&&f()}Object.defineProperty(e,"__esModule",{value:!0});var b,A,w,M={translateOnLoad:!0,mathcolor:"",displaystyle:!0,showasciiformulaonhover:!0,decimalsign:".",AMdelimiter1:"`",AMescape1:"\\\\`",AMusedelimiter2:!1,AMdelimiter2:"$",AMescape2:"\\\\\\$",AMdelimiter2regexp:"\\$",AMdocumentId:"wikitext",doubleblankmathdelimiter:!1},N=0,q=1,E=2,k=3,C=4,L=5,T=6,_=7,R=8,O=9,S=10,I={input:"sqrt",tag:"msqrt",output:"sqrt",tex:null,ttype:q},P={input:"root",tag:"mroot",output:"root",tex:null,ttype:E},$={input:"frac",tag:"mfrac",output:"/",tex:null,ttype:E},z={input:"/",tag:"mfrac",output:"/",tex:null,ttype:k},Z={input:"stackrel",tag:"mover",output:"stackrel",tex:null,ttype:E},B={input:"_",tag:"msub",output:"_",tex:null,ttype:k},Q={input:"^",tag:"msup",output:"^",tex:null,ttype:k},j={input:"text",tag:"mtext",output:"text",tex:null,ttype:S},D={input:"mbox",tag:"mtext",output:"mbox",tex:null,ttype:S},F={input:'"',tag:"mtext",output:"mbox",tex:null,ttype:S},U=[{input:"alpha",tag:"mi",output:"α",tex:null,ttype:N},{input:"beta",tag:"mi",output:"β",tex:null,ttype:N},{input:"chi",tag:"mi",output:"χ",tex:null,ttype:N},{input:"delta",tag:"mi",output:"δ",tex:null,ttype:N},{input:"Delta",tag:"mo",output:"Δ",tex:null,ttype:N},{input:"epsi",tag:"mi",output:"ε",tex:"epsilon",ttype:N},{input:"varepsilon",tag:"mi",output:"ɛ",tex:null,ttype:N},{input:"eta",tag:"mi",output:"η",tex:null,ttype:N},{input:"gamma",tag:"mi",output:"γ",tex:null,ttype:N},{input:"Gamma",tag:"mo",output:"Γ",tex:null,ttype:N},{input:"iota",tag:"mi",output:"ι",tex:null,ttype:N},{input:"kappa",tag:"mi",output:"κ",tex:null,ttype:N},{input:"lambda",tag:"mi",output:"λ",tex:null,ttype:N},{input:"Lambda",tag:"mo",output:"Λ",tex:null,ttype:N},{input:"lamda",tag:"mi",output:"lambda",tex:null,ttype:R},{input:"Lamda",tag:"mi",output:"Lambda",tex:null,ttype:R},{input:"mu",tag:"mi",output:"μ",tex:null,ttype:N},{input:"nu",tag:"mi",output:"ν",tex:null,ttype:N},{input:"omega",tag:"mi",output:"ω",tex:null,ttype:N},{input:"Omega",tag:"mo",output:"Ω",tex:null,ttype:N},{input:"phi",tag:"mi",output:"φ",tex:null,ttype:N},{input:"varphi",tag:"mi",output:"ϕ",tex:null,ttype:N},{input:"Phi",tag:"mo",output:"Φ",tex:null,ttype:N},{input:"pi",tag:"mi",output:"π",tex:null,ttype:N},{input:"Pi",tag:"mo",output:"Π",tex:null,ttype:N},{input:"psi",tag:"mi",output:"ψ",tex:null,ttype:N},{input:"Psi",tag:"mi",output:"Ψ",tex:null,ttype:N},{input:"rho",tag:"mi",output:"ρ",tex:null,ttype:N},{input:"sigma",tag:"mi",output:"σ",tex:null,ttype:N},{input:"Sigma",tag:"mo",output:"Σ",tex:null,ttype:N},{input:"tau",tag:"mi",output:"τ",tex:null,ttype:N},{input:"theta",tag:"mi",output:"θ",tex:null,ttype:N},{input:"vartheta",tag:"mi",output:"ϑ",tex:null,ttype:N},{input:"Theta",tag:"mo",output:"Θ",tex:null,ttype:N},{input:"upsilon",tag:"mi",output:"υ",tex:null,ttype:N},{input:"xi",tag:"mi",output:"ξ",tex:null,ttype:N},{input:"Xi",tag:"mo",output:"Ξ",tex:null,ttype:N},{input:"zeta",tag:"mi",output:"ζ",tex:null,ttype:N},{input:"*",tag:"mo",output:"⋅",tex:"cdot",ttype:N},{input:"**",tag:"mo",output:"∗",tex:"ast",ttype:N},{input:"***",tag:"mo",output:"⋆",tex:"star",ttype:N},{input:"//",tag:"mo",output:"/",tex:"/",ttype:N,val:!0,notexcopy:!0},{input:"\\\\",tag:"mo",output:"\\",tex:"backslash",ttype:N},{input:"setminus",tag:"mo",output:"\\",tex:null,ttype:N},{input:"xx",tag:"mo",output:"×",tex:"times",ttype:N},{input:"|><",tag:"mo",output:"⋉",tex:"ltimes",ttype:N},{input:"><|",tag:"mo",output:"⋊",tex:"rtimes",ttype:N},{input:"|><|",tag:"mo",output:"⋈",tex:"bowtie",ttype:N},{input:"-:",tag:"mo",output:"÷",tex:"div",ttype:N},{input:"divide",tag:"mo",output:"-:",tex:null,ttype:R},{input:"@",tag:"mo",output:"∘",tex:"circ",ttype:N},{input:"o+",tag:"mo",output:"⊕",tex:"oplus",ttype:N},{input:"ox",tag:"mo",output:"⊗",tex:"otimes",ttype:N},{input:"o.",tag:"mo",output:"⊙",tex:"odot",ttype:N},{input:"sum",tag:"mo",output:"∑",tex:null,ttype:_},{input:"prod",tag:"mo",output:"∏",tex:null,ttype:_},{input:"^^",tag:"mo",output:"∧",tex:"wedge",ttype:N},{input:"^^^",tag:"mo",output:"⋀",tex:"bigwedge",ttype:_},{input:"vv",tag:"mo",output:"∨",tex:"vee",ttype:N},{input:"vvv",tag:"mo",output:"⋁",tex:"bigvee",ttype:_},{input:"nn",tag:"mo",output:"∩",tex:"cap",ttype:N},{input:"nnn",tag:"mo",output:"⋂",tex:"bigcap",ttype:_},{input:"uu",tag:"mo",output:"∪",tex:"cup",ttype:N},{input:"uuu",tag:"mo",output:"⋃",tex:"bigcup",ttype:_},{input:"overset",tag:"mover",output:"stackrel",tex:null,ttype:E},{input:"underset",tag:"munder",output:"stackrel",tex:null,ttype:E},{input:"!=",tag:"mo",output:"≠",tex:"ne",ttype:N},{input:":=",tag:"mo",output:":=",tex:null,ttype:N},{input:"lt",tag:"mo",output:"<",tex:null,ttype:N},{input:"gt",tag:"mo",output:">",tex:null,ttype:N},{input:"<=",tag:"mo",output:"≤",tex:"le",ttype:N},{input:"lt=",tag:"mo",output:"≤",tex:"leq",ttype:N},{input:"gt=",tag:"mo",output:"≥",tex:"geq",ttype:N},{input:">=",tag:"mo",output:"≥",tex:"ge",ttype:N},{input:"-<",tag:"mo",output:"≺",tex:"prec",ttype:N},{input:"-lt",tag:"mo",output:"≺",tex:null,ttype:N},{input:">-",tag:"mo",output:"≻",tex:"succ",ttype:N},{input:"-<=",tag:"mo",output:"⪯",tex:"preceq",ttype:N},{input:">-=",tag:"mo",output:"⪰",tex:"succeq",ttype:N},{input:"in",tag:"mo",output:"∈",tex:null,ttype:N},{input:"!in",tag:"mo",output:"∉",tex:"notin",ttype:N},{input:"sub",tag:"mo",output:"⊂",tex:"subset",ttype:N},{input:"sup",tag:"mo",output:"⊃",tex:"supset",ttype:N},{input:"sube",tag:"mo",output:"⊆",tex:"subseteq",ttype:N},{input:"supe",tag:"mo",output:"⊇",tex:"supseteq",ttype:N},{input:"-=",tag:"mo",output:"≡",tex:"equiv",ttype:N},{input:"~=",tag:"mo",output:"≅",tex:"stackrel{\\sim}{=}",ttype:N},{input:"cong",tag:"mo",output:"~=",tex:null,ttype:R},{input:"~~",tag:"mo",output:"≈",tex:"approx",ttype:N},{input:"prop",tag:"mo",output:"∝",tex:"propto",ttype:N},{input:"and",tag:"mtext",output:"and",tex:null,ttype:T},{input:"or",tag:"mtext",output:"or",tex:null,ttype:T},{input:"not",tag:"mo",output:"¬",tex:"neg",ttype:N},{input:"=>",tag:"mo",output:"⇒",tex:"Rightarrow",ttype:N},{input:"implies",tag:"mo",output:"=>",tex:null,ttype:R},{input:"if",tag:"mo",output:"if",tex:null,ttype:T},{input:"<=>",tag:"mo",output:"⇔",tex:"Leftrightarrow",ttype:N},{input:"iff",tag:"mo",output:"<=>",tex:null,ttype:R},{input:"AA",tag:"mo",output:"∀",tex:"forall",ttype:N},{input:"EE",tag:"mo",output:"∃",tex:"exists",ttype:N},{input:"_|_",tag:"mo",output:"⊥",tex:"bot",ttype:N},{input:"TT",tag:"mo",output:"⊤",tex:"top",ttype:N},{input:"|--",tag:"mo",output:"⊢",tex:"vdash",ttype:N},{input:"|==",tag:"mo",output:"⊨",tex:"models",ttype:N},{input:"(",tag:"mo",output:"(",tex:null,ttype:C,val:!0},{input:")",tag:"mo",output:")",tex:null,ttype:L,val:!0},{input:"[",tag:"mo",output:"[",tex:null,ttype:C,val:!0},{input:"]",tag:"mo",output:"]",tex:null,ttype:L,val:!0},{input:"{",tag:"mo",output:"{",tex:"lbrace",ttype:C},{input:"}",tag:"mo",output:"}",tex:"rbrace",ttype:L},{input:"|",tag:"mo",output:"|",tex:null,ttype:O,val:!0},{input:"(:",tag:"mo",output:"〈",tex:"langle",ttype:C},{input:":)",tag:"mo",output:"〉",tex:"rangle",ttype:L},{input:"<<",tag:"mo",output:"〈",tex:"langle",ttype:C},{input:">>",tag:"mo",output:"〉",tex:"rangle",ttype:L},{input:"{:",tag:"mo",output:"{:",tex:null,ttype:C,invisible:!0},{input:":}",tag:"mo",output:":}",tex:null,ttype:L,invisible:!0},{input:"int",tag:"mo",output:"∫",tex:null,ttype:N},{input:"dx",tag:"mi",output:"{:d x:}",tex:null,ttype:R},{input:"dy",tag:"mi",output:"{:d y:}",tex:null,ttype:R},{input:"dz",tag:"mi",output:"{:d z:}",tex:null,ttype:R},{input:"dt",tag:"mi",output:"{:d t:}",tex:null,ttype:R},{input:"oint",tag:"mo",output:"∮",tex:null,ttype:N},{input:"del",tag:"mo",output:"∂",tex:"partial",ttype:N},{input:"grad",tag:"mo",output:"∇",tex:"nabla",ttype:N},{input:"+-",tag:"mo",output:"±",tex:"pm",ttype:N},{input:"O/",tag:"mo",output:"∅",tex:"emptyset",ttype:N},{input:"oo",tag:"mo",output:"∞",tex:"infty",ttype:N},{input:"aleph",tag:"mo",output:"ℵ",tex:null,ttype:N},{input:"...",tag:"mo",output:"...",tex:"ldots",ttype:N},{input:":.",tag:"mo",output:"∴",tex:"therefore",ttype:N},{input:":'",tag:"mo",output:"∵",tex:"because",ttype:N},{input:"/_",tag:"mo",output:"∠",tex:"angle",ttype:N},{input:"/_\\",tag:"mo",output:"△",tex:"triangle",ttype:N},{input:"\\ ",tag:"mo",output:" ",tex:null,ttype:N,val:!0},{input:"frown",tag:"mo",output:"⌢",tex:null,ttype:N},{input:"%",tag:"mo",output:"%",tex:"%",ttype:N,notexcopy:!0},{input:"quad",tag:"mo",output:"  ",tex:null,ttype:N},{input:"qquad",tag:"mo",output:"    ",tex:null,ttype:N},{input:"cdots",tag:"mo",output:"⋯",tex:null,ttype:N},{input:"vdots",tag:"mo",output:"⋮",tex:null,ttype:N},{input:"ddots",tag:"mo",output:"⋱",tex:null,ttype:N},{input:"diamond",tag:"mo",output:"⋄",tex:null,ttype:N},{input:"square",tag:"mo",output:"□",tex:"boxempty",ttype:N},{input:"|__",tag:"mo",output:"⌊",tex:"lfloor",ttype:N},{input:"__|",tag:"mo",output:"⌋",tex:"rfloor",ttype:N},{input:"|~",tag:"mo",output:"⌈",tex:"lceil",ttype:N},{input:"lceiling",tag:"mo",output:"|~",tex:null,ttype:R},{input:"~|",tag:"mo",output:"⌉",tex:"rceil",ttype:N},{input:"rceiling",tag:"mo",output:"~|",tex:null,ttype:R},{input:"CC",tag:"mo",output:"ℂ",tex:"mathbb{C}",ttype:N,notexcopy:!0},{input:"NN",tag:"mo",output:"ℕ",tex:"mathbb{N}",ttype:N,notexcopy:!0},{input:"QQ",tag:"mo",output:"ℚ",tex:"mathbb{Q}",ttype:N,notexcopy:!0},{input:"RR",tag:"mo",output:"ℝ",tex:"mathbb{R}",ttype:N,notexcopy:!0},{input:"ZZ",tag:"mo",output:"ℤ",tex:"mathbb{Z}",ttype:N,notexcopy:!0},{input:"f",tag:"mi",output:"f",tex:null,ttype:q,func:!0,val:!0},{input:"g",tag:"mi",output:"g",tex:null,ttype:q,func:!0,val:!0},{input:"''",tag:"mo",output:"''",tex:null,val:!0},{input:"'''",tag:"mo",output:"'''",tex:null,val:!0},{input:"''''",tag:"mo",output:"''''",tex:null,val:!0},{input:"lim",tag:"mo",output:"lim",tex:null,ttype:_},{input:"Lim",tag:"mo",output:"Lim",tex:null,ttype:_},{input:"sin",tag:"mo",output:"sin",tex:null,ttype:q,func:!0},{input:"cos",tag:"mo",output:"cos",tex:null,ttype:q,func:!0},{input:"tan",tag:"mo",output:"tan",tex:null,ttype:q,func:!0},{input:"arcsin",tag:"mo",output:"arcsin",tex:null,ttype:q,func:!0},{input:"arccos",tag:"mo",output:"arccos",tex:null,ttype:q,func:!0},{input:"arctan",tag:"mo",output:"arctan",tex:null,ttype:q,func:!0},{input:"sinh",tag:"mo",output:"sinh",tex:null,ttype:q,func:!0},{input:"cosh",tag:"mo",output:"cosh",tex:null,ttype:q,func:!0},{input:"tanh",tag:"mo",output:"tanh",tex:null,ttype:q,func:!0},{input:"cot",tag:"mo",output:"cot",tex:null,ttype:q,func:!0},{input:"coth",tag:"mo",output:"coth",tex:null,ttype:q,func:!0},{input:"sech",tag:"mo",output:"sech",tex:null,ttype:q,func:!0},{input:"csch",tag:"mo",output:"csch",tex:null,ttype:q,func:!0},{input:"sec",tag:"mo",output:"sec",tex:null,ttype:q,func:!0},{input:"csc",tag:"mo",output:"csc",tex:null,ttype:q,func:!0},{input:"log",tag:"mo",output:"log",tex:null,ttype:q,func:!0},{input:"ln",tag:"mo",output:"ln",tex:null,ttype:q,func:!0},{input:"abs",tag:"mo",output:"abs",tex:null,ttype:q,notexcopy:!0,rewriteleftright:["|","|"]},{input:"norm",tag:"mo",output:"norm",tex:null,ttype:q,notexcopy:!0,rewriteleftright:["\\|","\\|"]},{input:"floor",tag:"mo",output:"floor",tex:null,ttype:q,notexcopy:!0,rewriteleftright:["\\lfloor","\\rfloor"]},{input:"ceil",tag:"mo",output:"ceil",tex:null,ttype:q,notexcopy:!0,rewriteleftright:["\\lceil","\\rceil"]},{input:"Sin",tag:"mo",output:"sin",tex:null,ttype:q,func:!0},{input:"Cos",tag:"mo",output:"cos",tex:null,ttype:q,func:!0},{input:"Tan",tag:"mo",output:"tan",tex:null,ttype:q,func:!0},{input:"Arcsin",tag:"mo",output:"arcsin",tex:null,ttype:q,func:!0},{input:"Arccos",tag:"mo",output:"arccos",tex:null,ttype:q,func:!0},{input:"Arctan",tag:"mo",output:"arctan",tex:null,ttype:q,func:!0},{input:"Sinh",tag:"mo",output:"sinh",tex:null,ttype:q,func:!0},{input:"Sosh",tag:"mo",output:"cosh",tex:null,ttype:q,func:!0},{input:"Tanh",tag:"mo",output:"tanh",tex:null,ttype:q,func:!0},{input:"Cot",tag:"mo",output:"cot",tex:null,ttype:q,func:!0},{input:"Sec",tag:"mo",output:"sec",tex:null,ttype:q,func:!0},{input:"Csc",tag:"mo",output:"csc",tex:null,ttype:q,func:!0},{input:"Log",tag:"mo",output:"log",tex:null,ttype:q,func:!0},{input:"Ln",tag:"mo",output:"ln",tex:null,ttype:q,func:!0},{input:"Abs",tag:"mo",output:"abs",tex:null,ttype:q,notexcopy:!0,rewriteleftright:["|","|"]},{input:"det",tag:"mo",output:"det",tex:null,ttype:q,func:!0},{input:"exp",tag:"mo",output:"exp",tex:null,ttype:q,func:!0},{input:"dim",tag:"mo",output:"dim",tex:null,ttype:N},{input:"mod",tag:"mo",output:"mod",tex:"text{mod}",ttype:N,notexcopy:!0},{input:"gcd",tag:"mo",output:"gcd",tex:null,ttype:q,func:!0},{input:"lcm",tag:"mo",output:"lcm",tex:"text{lcm}",ttype:q,func:!0,notexcopy:!0},{input:"lub",tag:"mo",output:"lub",tex:null,ttype:N},{input:"glb",tag:"mo",output:"glb",tex:null,ttype:N},{input:"min",tag:"mo",output:"min",tex:null,ttype:_},{input:"max",tag:"mo",output:"max",tex:null,ttype:_},{input:"uarr",tag:"mo",output:"↑",tex:"uparrow",ttype:N},{input:"darr",tag:"mo",output:"↓",tex:"downarrow",ttype:N},{input:"rarr",tag:"mo",output:"→",tex:"rightarrow",ttype:N},{input:"->",tag:"mo",output:"→",tex:"to",ttype:N},{input:">->",tag:"mo",output:"↣",tex:"rightarrowtail",ttype:N},{input:"->>",tag:"mo",output:"↠",tex:"twoheadrightarrow",ttype:N},{input:">->>",tag:"mo",output:"⤖",tex:"twoheadrightarrowtail",ttype:N},{input:"|->",tag:"mo",output:"↦",tex:"mapsto",ttype:N},{input:"larr",tag:"mo",output:"←",tex:"leftarrow",ttype:N},{input:"harr",tag:"mo",output:"↔",tex:"leftrightarrow",ttype:N},{input:"rArr",tag:"mo",output:"⇒",tex:"Rightarrow",ttype:N},{input:"lArr",tag:"mo",output:"⇐",tex:"Leftarrow",ttype:N},{input:"hArr",tag:"mo",output:"⇔",tex:"Leftrightarrow",ttype:N},I,P,$,z,Z,B,Q,{input:"cancel",tag:"menclose",output:"cancel",tex:null,ttype:q},{input:"Sqrt",tag:"msqrt",output:"sqrt",tex:null,ttype:q},{input:"hat",tag:"mover",output:"^",tex:null,ttype:q,acc:!0},{input:"bar",tag:"mover",output:"¯",tex:"overline",ttype:q,acc:!0},{input:"vec",tag:"mover",output:"→",tex:null,ttype:q,acc:!0},{input:"tilde",tag:"mover",output:"~",tex:null,ttype:q,acc:!0},{input:"dot",tag:"mover",output:".",tex:null,ttype:q,acc:!0},{input:"ddot",tag:"mover",output:"..",tex:null,ttype:q,acc:!0},{input:"ul",tag:"munder",output:"̲",tex:"underline",ttype:q,acc:!0},{input:"ubrace",tag:"munder",output:"⏟",tex:"underbrace",ttype:q,acc:!0},{input:"obrace",tag:"mover",output:"⏞",tex:"overbrace",ttype:q,acc:!0},j,D,F,{input:"color",tag:"mstyle",ttype:E},{input:"bb",tag:"mstyle",atname:"mathvariant",atval:"bold",output:"bb",tex:"mathbf",ttype:q,notexcopy:!0},{input:"mathbf",tag:"mstyle",atname:"mathvariant",atval:"bold",output:"mathbf",tex:null,ttype:q},{input:"sf",tag:"mstyle",atname:"mathvariant",atval:"sans-serif",output:"sf",tex:"mathsf",ttype:q,notexcopy:!0},{input:"mathsf",tag:"mstyle",atname:"mathvariant",atval:"sans-serif",output:"mathsf",tex:null,ttype:q},{input:"bbb",tag:"mstyle",atname:"mathvariant",atval:"double-struck",output:"bbb",tex:"mathbb",ttype:q,notexcopy:!0},{input:"mathbb",tag:"mstyle",atname:"mathvariant",atval:"double-struck",output:"mathbb",tex:null,ttype:q},{input:"cc",tag:"mstyle",atname:"mathvariant",atval:"script",output:"cc",tex:"mathcal",ttype:q,notexcopy:!0},{input:"mathcal",tag:"mstyle",atname:"mathvariant",atval:"script",output:"mathcal",tex:null,ttype:q},{input:"tt",tag:"mstyle",atname:"mathvariant",atval:"monospace",output:"tt",tex:"mathtt",ttype:q,notexcopy:!0},{input:"mathtt",tag:"mstyle",atname:"mathvariant",atval:"monospace",output:"mathtt",tex:null,ttype:q},{input:"fr",tag:"mstyle",atname:"mathvariant",atval:"fraktur",output:"fr",tex:"mathfrak",ttype:q,notexcopy:!0},{input:"mathfrak",tag:"mstyle",atname:"mathvariant",atval:"fraktur",output:"mathfrak",tex:null,ttype:q}],X=[],G=!1;if(p(),"undefined"!=typeof window.addEventListener)window.addEventListener("load",v,!1);else if("undefined"!=typeof document.addEventListener)document.addEventListener("load",v,!1);else if("undefined"!=typeof window.attachEvent)window.attachEvent("onload",v);else if("function"==typeof window.onload){var H=onload;window.onload=function(){H(),v()}}else window.onload=v;e.default=y}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var config = {
+	  translateOnLoad: true, //true to autotranslate
+	  mathcolor: "", // defaults to back, or specify any other color
+	  displaystyle: true, // puts limits above and below large operators
+	  showasciiformulaonhover: true, // helps students learn ASCIIMath
+	  decimalsign: ".", // change to "," if you like, beware of `(1,2)`!
+	  AMdelimiter1: "`", AMescape1: "\\\\`", // can use other characters
+	  AMusedelimiter2: false, //whether to use second delimiter below
+	  AMdelimiter2: "$", AMescape2: "\\\\\\$", AMdelimiter2regexp: "\\$",
+	  AMdocumentId: "wikitext", // PmWiki element containing math (default=body)
+	  doubleblankmathdelimiter: false // if true,  x+1  is equal to `x+1`
+	}; // for IE this works only in <!--   -->
+
+	var CONST = 0,
+	    UNARY = 1,
+	    BINARY = 2,
+	    INFIX = 3,
+	    LEFTBRACKET = 4,
+	    RIGHTBRACKET = 5,
+	    SPACE = 6,
+	    UNDEROVER = 7,
+	    DEFINITION = 8,
+	    LEFTRIGHT = 9,
+	    TEXT = 10; // token types
+
+	var AMsqrt = { input: "sqrt", tag: "msqrt", output: "sqrt", tex: null, ttype: UNARY },
+	    AMroot = { input: "root", tag: "mroot", output: "root", tex: null, ttype: BINARY },
+	    AMfrac = { input: "frac", tag: "mfrac", output: "/", tex: null, ttype: BINARY },
+	    AMdiv = { input: "/", tag: "mfrac", output: "/", tex: null, ttype: INFIX },
+	    AMover = { input: "stackrel", tag: "mover", output: "stackrel", tex: null, ttype: BINARY },
+	    AMsub = { input: "_", tag: "msub", output: "_", tex: null, ttype: INFIX },
+	    AMsup = { input: "^", tag: "msup", output: "^", tex: null, ttype: INFIX },
+	    AMtext = { input: "text", tag: "mtext", output: "text", tex: null, ttype: TEXT },
+	    AMmbox = { input: "mbox", tag: "mtext", output: "mbox", tex: null, ttype: TEXT },
+	    AMquote = { input: "\"", tag: "mtext", output: "mbox", tex: null, ttype: TEXT };
+
+	var AMsymbols = [
+	//some greek symbols
+	{ input: "alpha", tag: "mi", output: "\u03B1", tex: null, ttype: CONST }, { input: "beta", tag: "mi", output: "\u03B2", tex: null, ttype: CONST }, { input: "chi", tag: "mi", output: "\u03C7", tex: null, ttype: CONST }, { input: "delta", tag: "mi", output: "\u03B4", tex: null, ttype: CONST }, { input: "Delta", tag: "mo", output: "\u0394", tex: null, ttype: CONST }, { input: "epsi", tag: "mi", output: "\u03B5", tex: "epsilon", ttype: CONST }, { input: "varepsilon", tag: "mi", output: "\u025B", tex: null, ttype: CONST }, { input: "eta", tag: "mi", output: "\u03B7", tex: null, ttype: CONST }, { input: "gamma", tag: "mi", output: "\u03B3", tex: null, ttype: CONST }, { input: "Gamma", tag: "mo", output: "\u0393", tex: null, ttype: CONST }, { input: "iota", tag: "mi", output: "\u03B9", tex: null, ttype: CONST }, { input: "kappa", tag: "mi", output: "\u03BA", tex: null, ttype: CONST }, { input: "lambda", tag: "mi", output: "\u03BB", tex: null, ttype: CONST }, { input: "Lambda", tag: "mo", output: "\u039B", tex: null, ttype: CONST }, { input: "lamda", tag: "mi", output: "lambda", tex: null, ttype: DEFINITION }, { input: "Lamda", tag: "mi", output: "Lambda", tex: null, ttype: DEFINITION }, { input: "mu", tag: "mi", output: "\u03BC", tex: null, ttype: CONST }, { input: "nu", tag: "mi", output: "\u03BD", tex: null, ttype: CONST }, { input: "omega", tag: "mi", output: "\u03C9", tex: null, ttype: CONST }, { input: "Omega", tag: "mo", output: "\u03A9", tex: null, ttype: CONST }, { input: "phi", tag: "mi", output: "\u03C6", tex: null, ttype: CONST }, { input: "varphi", tag: "mi", output: "\u03D5", tex: null, ttype: CONST }, { input: "Phi", tag: "mo", output: "\u03A6", tex: null, ttype: CONST }, { input: "pi", tag: "mi", output: "\u03C0", tex: null, ttype: CONST }, { input: "Pi", tag: "mo", output: "\u03A0", tex: null, ttype: CONST }, { input: "psi", tag: "mi", output: "\u03C8", tex: null, ttype: CONST }, { input: "Psi", tag: "mi", output: "\u03A8", tex: null, ttype: CONST }, { input: "rho", tag: "mi", output: "\u03C1", tex: null, ttype: CONST }, { input: "sigma", tag: "mi", output: "\u03C3", tex: null, ttype: CONST }, { input: "Sigma", tag: "mo", output: "\u03A3", tex: null, ttype: CONST }, { input: "tau", tag: "mi", output: "\u03C4", tex: null, ttype: CONST }, { input: "theta", tag: "mi", output: "\u03B8", tex: null, ttype: CONST }, { input: "vartheta", tag: "mi", output: "\u03D1", tex: null, ttype: CONST }, { input: "Theta", tag: "mo", output: "\u0398", tex: null, ttype: CONST }, { input: "upsilon", tag: "mi", output: "\u03C5", tex: null, ttype: CONST }, { input: "xi", tag: "mi", output: "\u03BE", tex: null, ttype: CONST }, { input: "Xi", tag: "mo", output: "\u039E", tex: null, ttype: CONST }, { input: "zeta", tag: "mi", output: "\u03B6", tex: null, ttype: CONST },
+
+	//binary operation symbols
+	{ input: "*", tag: "mo", output: "\u22C5", tex: "cdot", ttype: CONST }, { input: "**", tag: "mo", output: "\u2217", tex: "ast", ttype: CONST }, { input: "***", tag: "mo", output: "\u22C6", tex: "star", ttype: CONST }, { input: "//", tag: "mo", output: "/", tex: "/", ttype: CONST, val: true, notexcopy: true }, { input: "\\\\", tag: "mo", output: "\\", tex: "backslash", ttype: CONST }, { input: "setminus", tag: "mo", output: "\\", tex: null, ttype: CONST }, { input: "xx", tag: "mo", output: "\xD7", tex: "times", ttype: CONST }, { input: "|><", tag: "mo", output: "\u22C9", tex: "ltimes", ttype: CONST }, { input: "><|", tag: "mo", output: "\u22CA", tex: "rtimes", ttype: CONST }, { input: "|><|", tag: "mo", output: "\u22C8", tex: "bowtie", ttype: CONST }, { input: "-:", tag: "mo", output: "\xF7", tex: "div", ttype: CONST }, { input: "divide", tag: "mo", output: "-:", tex: null, ttype: DEFINITION }, { input: "@", tag: "mo", output: "\u2218", tex: "circ", ttype: CONST }, { input: "o+", tag: "mo", output: "\u2295", tex: "oplus", ttype: CONST }, { input: "ox", tag: "mo", output: "\u2297", tex: "otimes", ttype: CONST }, { input: "o.", tag: "mo", output: "\u2299", tex: "odot", ttype: CONST }, { input: "sum", tag: "mo", output: "\u2211", tex: null, ttype: UNDEROVER }, { input: "prod", tag: "mo", output: "\u220F", tex: null, ttype: UNDEROVER }, { input: "^^", tag: "mo", output: "\u2227", tex: "wedge", ttype: CONST }, { input: "^^^", tag: "mo", output: "\u22C0", tex: "bigwedge", ttype: UNDEROVER }, { input: "vv", tag: "mo", output: "\u2228", tex: "vee", ttype: CONST }, { input: "vvv", tag: "mo", output: "\u22C1", tex: "bigvee", ttype: UNDEROVER }, { input: "nn", tag: "mo", output: "\u2229", tex: "cap", ttype: CONST }, { input: "nnn", tag: "mo", output: "\u22C2", tex: "bigcap", ttype: UNDEROVER }, { input: "uu", tag: "mo", output: "\u222A", tex: "cup", ttype: CONST }, { input: "uuu", tag: "mo", output: "\u22C3", tex: "bigcup", ttype: UNDEROVER }, { input: "overset", tag: "mover", output: "stackrel", tex: null, ttype: BINARY }, { input: "underset", tag: "munder", output: "stackrel", tex: null, ttype: BINARY },
+
+	//binary relation symbols
+	{ input: "!=", tag: "mo", output: "\u2260", tex: "ne", ttype: CONST }, { input: ":=", tag: "mo", output: ":=", tex: null, ttype: CONST }, { input: "lt", tag: "mo", output: "<", tex: null, ttype: CONST }, { input: "gt", tag: "mo", output: ">", tex: null, ttype: CONST }, { input: "<=", tag: "mo", output: "\u2264", tex: "le", ttype: CONST }, { input: "lt=", tag: "mo", output: "\u2264", tex: "leq", ttype: CONST }, { input: "gt=", tag: "mo", output: "\u2265", tex: "geq", ttype: CONST }, { input: ">=", tag: "mo", output: "\u2265", tex: "ge", ttype: CONST }, { input: "-<", tag: "mo", output: "\u227A", tex: "prec", ttype: CONST }, { input: "-lt", tag: "mo", output: "\u227A", tex: null, ttype: CONST }, { input: ">-", tag: "mo", output: "\u227B", tex: "succ", ttype: CONST }, { input: "-<=", tag: "mo", output: "\u2AAF", tex: "preceq", ttype: CONST }, { input: ">-=", tag: "mo", output: "\u2AB0", tex: "succeq", ttype: CONST }, { input: "in", tag: "mo", output: "\u2208", tex: null, ttype: CONST }, { input: "!in", tag: "mo", output: "\u2209", tex: "notin", ttype: CONST }, { input: "sub", tag: "mo", output: "\u2282", tex: "subset", ttype: CONST }, { input: "sup", tag: "mo", output: "\u2283", tex: "supset", ttype: CONST }, { input: "sube", tag: "mo", output: "\u2286", tex: "subseteq", ttype: CONST }, { input: "supe", tag: "mo", output: "\u2287", tex: "supseteq", ttype: CONST }, { input: "-=", tag: "mo", output: "\u2261", tex: "equiv", ttype: CONST }, { input: "~=", tag: "mo", output: "\u2245", tex: "stackrel{\\sim}{=}", ttype: CONST }, //back hack b/c mimetex doesn't support /cong
+	{ input: "cong", tag: "mo", output: "~=", tex: null, ttype: DEFINITION }, { input: "~~", tag: "mo", output: "\u2248", tex: "approx", ttype: CONST }, { input: "prop", tag: "mo", output: "\u221D", tex: "propto", ttype: CONST },
+
+	//logical symbols
+	{ input: "and", tag: "mtext", output: "and", tex: null, ttype: SPACE }, { input: "or", tag: "mtext", output: "or", tex: null, ttype: SPACE }, { input: "not", tag: "mo", output: "\xAC", tex: "neg", ttype: CONST }, { input: "=>", tag: "mo", output: "\u21D2", tex: "Rightarrow", ttype: CONST }, { input: "implies", tag: "mo", output: "=>", tex: null, ttype: DEFINITION }, { input: "if", tag: "mo", output: "if", tex: null, ttype: SPACE }, { input: "<=>", tag: "mo", output: "\u21D4", tex: "Leftrightarrow", ttype: CONST }, { input: "iff", tag: "mo", output: "<=>", tex: null, ttype: DEFINITION }, { input: "AA", tag: "mo", output: "\u2200", tex: "forall", ttype: CONST }, { input: "EE", tag: "mo", output: "\u2203", tex: "exists", ttype: CONST }, { input: "_|_", tag: "mo", output: "\u22A5", tex: "bot", ttype: CONST }, { input: "TT", tag: "mo", output: "\u22A4", tex: "top", ttype: CONST }, { input: "|--", tag: "mo", output: "\u22A2", tex: "vdash", ttype: CONST }, { input: "|==", tag: "mo", output: "\u22A8", tex: "models", ttype: CONST }, //mimetex doesn't support
+
+	//grouping brackets
+	{ input: "(", tag: "mo", output: "(", tex: null, ttype: LEFTBRACKET, val: true }, { input: ")", tag: "mo", output: ")", tex: null, ttype: RIGHTBRACKET, val: true }, { input: "[", tag: "mo", output: "[", tex: null, ttype: LEFTBRACKET, val: true }, { input: "]", tag: "mo", output: "]", tex: null, ttype: RIGHTBRACKET, val: true }, { input: "{", tag: "mo", output: "{", tex: "lbrace", ttype: LEFTBRACKET }, { input: "}", tag: "mo", output: "}", tex: "rbrace", ttype: RIGHTBRACKET }, { input: "|", tag: "mo", output: "|", tex: null, ttype: LEFTRIGHT, val: true },
+	//{input:"||", tag:"mo", output:"||", tex:null, ttype:LEFTRIGHT},
+	{ input: "(:", tag: "mo", output: "\u2329", tex: "langle", ttype: LEFTBRACKET }, { input: ":)", tag: "mo", output: "\u232A", tex: "rangle", ttype: RIGHTBRACKET }, { input: "<<", tag: "mo", output: "\u2329", tex: "langle", ttype: LEFTBRACKET }, { input: ">>", tag: "mo", output: "\u232A", tex: "rangle", ttype: RIGHTBRACKET }, { input: "{:", tag: "mo", output: "{:", tex: null, ttype: LEFTBRACKET, invisible: true }, { input: ":}", tag: "mo", output: ":}", tex: null, ttype: RIGHTBRACKET, invisible: true },
+
+	//miscellaneous symbols
+	{ input: "int", tag: "mo", output: "\u222B", tex: null, ttype: CONST }, { input: "dx", tag: "mi", output: "{:d x:}", tex: null, ttype: DEFINITION }, { input: "dy", tag: "mi", output: "{:d y:}", tex: null, ttype: DEFINITION }, { input: "dz", tag: "mi", output: "{:d z:}", tex: null, ttype: DEFINITION }, { input: "dt", tag: "mi", output: "{:d t:}", tex: null, ttype: DEFINITION }, { input: "oint", tag: "mo", output: "\u222E", tex: null, ttype: CONST }, { input: "del", tag: "mo", output: "\u2202", tex: "partial", ttype: CONST }, { input: "grad", tag: "mo", output: "\u2207", tex: "nabla", ttype: CONST }, { input: "+-", tag: "mo", output: "\xB1", tex: "pm", ttype: CONST }, { input: "O/", tag: "mo", output: "\u2205", tex: "emptyset", ttype: CONST }, { input: "oo", tag: "mo", output: "\u221E", tex: "infty", ttype: CONST }, { input: "aleph", tag: "mo", output: "\u2135", tex: null, ttype: CONST }, { input: "...", tag: "mo", output: "...", tex: "ldots", ttype: CONST }, { input: ":.", tag: "mo", output: "\u2234", tex: "therefore", ttype: CONST }, { input: ":'", tag: "mo", output: "\u2235", tex: "because", ttype: CONST }, { input: "/_", tag: "mo", output: "\u2220", tex: "angle", ttype: CONST }, { input: "/_\\", tag: "mo", output: "\u25B3", tex: "triangle", ttype: CONST }, { input: "\\ ", tag: "mo", output: "\xA0", tex: null, ttype: CONST, val: true }, { input: "frown", tag: "mo", output: "\u2322", tex: null, ttype: CONST }, { input: "%", tag: "mo", output: "%", tex: "%", ttype: CONST, notexcopy: true }, { input: "quad", tag: "mo", output: "\xA0\xA0", tex: null, ttype: CONST }, { input: "qquad", tag: "mo", output: "\xA0\xA0\xA0\xA0", tex: null, ttype: CONST }, { input: "cdots", tag: "mo", output: "\u22EF", tex: null, ttype: CONST }, { input: "vdots", tag: "mo", output: "\u22EE", tex: null, ttype: CONST }, { input: "ddots", tag: "mo", output: "\u22F1", tex: null, ttype: CONST }, { input: "diamond", tag: "mo", output: "\u22C4", tex: null, ttype: CONST }, { input: "square", tag: "mo", output: "\u25A1", tex: "boxempty", ttype: CONST }, { input: "|__", tag: "mo", output: "\u230A", tex: "lfloor", ttype: CONST }, { input: "__|", tag: "mo", output: "\u230B", tex: "rfloor", ttype: CONST }, { input: "|~", tag: "mo", output: "\u2308", tex: "lceil", ttype: CONST }, { input: "lceiling", tag: "mo", output: "|~", tex: null, ttype: DEFINITION }, { input: "~|", tag: "mo", output: "\u2309", tex: "rceil", ttype: CONST }, { input: "rceiling", tag: "mo", output: "~|", tex: null, ttype: DEFINITION }, { input: "CC", tag: "mo", output: "\u2102", tex: "mathbb{C}", ttype: CONST, notexcopy: true }, { input: "NN", tag: "mo", output: "\u2115", tex: "mathbb{N}", ttype: CONST, notexcopy: true }, { input: "QQ", tag: "mo", output: "\u211A", tex: "mathbb{Q}", ttype: CONST, notexcopy: true }, { input: "RR", tag: "mo", output: "\u211D", tex: "mathbb{R}", ttype: CONST, notexcopy: true }, { input: "ZZ", tag: "mo", output: "\u2124", tex: "mathbb{Z}", ttype: CONST, notexcopy: true }, { input: "f", tag: "mi", output: "f", tex: null, ttype: UNARY, func: true, val: true }, { input: "g", tag: "mi", output: "g", tex: null, ttype: UNARY, func: true, val: true }, { input: "''", tag: "mo", output: "''", tex: null, val: true }, { input: "'''", tag: "mo", output: "'''", tex: null, val: true }, { input: "''''", tag: "mo", output: "''''", tex: null, val: true },
+
+	//standard functions
+	{ input: "lim", tag: "mo", output: "lim", tex: null, ttype: UNDEROVER }, { input: "Lim", tag: "mo", output: "Lim", tex: null, ttype: UNDEROVER }, { input: "sin", tag: "mo", output: "sin", tex: null, ttype: UNARY, func: true }, { input: "cos", tag: "mo", output: "cos", tex: null, ttype: UNARY, func: true }, { input: "tan", tag: "mo", output: "tan", tex: null, ttype: UNARY, func: true }, { input: "arcsin", tag: "mo", output: "arcsin", tex: null, ttype: UNARY, func: true }, { input: "arccos", tag: "mo", output: "arccos", tex: null, ttype: UNARY, func: true }, { input: "arctan", tag: "mo", output: "arctan", tex: null, ttype: UNARY, func: true }, { input: "sinh", tag: "mo", output: "sinh", tex: null, ttype: UNARY, func: true }, { input: "cosh", tag: "mo", output: "cosh", tex: null, ttype: UNARY, func: true }, { input: "tanh", tag: "mo", output: "tanh", tex: null, ttype: UNARY, func: true }, { input: "cot", tag: "mo", output: "cot", tex: null, ttype: UNARY, func: true }, { input: "coth", tag: "mo", output: "coth", tex: null, ttype: UNARY, func: true }, { input: "sech", tag: "mo", output: "sech", tex: null, ttype: UNARY, func: true }, { input: "csch", tag: "mo", output: "csch", tex: null, ttype: UNARY, func: true }, { input: "sec", tag: "mo", output: "sec", tex: null, ttype: UNARY, func: true }, { input: "csc", tag: "mo", output: "csc", tex: null, ttype: UNARY, func: true }, { input: "log", tag: "mo", output: "log", tex: null, ttype: UNARY, func: true }, { input: "ln", tag: "mo", output: "ln", tex: null, ttype: UNARY, func: true }, { input: "abs", tag: "mo", output: "abs", tex: null, ttype: UNARY, notexcopy: true, rewriteleftright: ["|", "|"] }, { input: "norm", tag: "mo", output: "norm", tex: null, ttype: UNARY, notexcopy: true, rewriteleftright: ["\\|", "\\|"] }, { input: "floor", tag: "mo", output: "floor", tex: null, ttype: UNARY, notexcopy: true, rewriteleftright: ["\\lfloor", "\\rfloor"] }, { input: "ceil", tag: "mo", output: "ceil", tex: null, ttype: UNARY, notexcopy: true, rewriteleftright: ["\\lceil", "\\rceil"] }, { input: "Sin", tag: "mo", output: "sin", tex: null, ttype: UNARY, func: true }, { input: "Cos", tag: "mo", output: "cos", tex: null, ttype: UNARY, func: true }, { input: "Tan", tag: "mo", output: "tan", tex: null, ttype: UNARY, func: true }, { input: "Arcsin", tag: "mo", output: "arcsin", tex: null, ttype: UNARY, func: true }, { input: "Arccos", tag: "mo", output: "arccos", tex: null, ttype: UNARY, func: true }, { input: "Arctan", tag: "mo", output: "arctan", tex: null, ttype: UNARY, func: true }, { input: "Sinh", tag: "mo", output: "sinh", tex: null, ttype: UNARY, func: true }, { input: "Sosh", tag: "mo", output: "cosh", tex: null, ttype: UNARY, func: true }, { input: "Tanh", tag: "mo", output: "tanh", tex: null, ttype: UNARY, func: true }, { input: "Cot", tag: "mo", output: "cot", tex: null, ttype: UNARY, func: true }, { input: "Sec", tag: "mo", output: "sec", tex: null, ttype: UNARY, func: true }, { input: "Csc", tag: "mo", output: "csc", tex: null, ttype: UNARY, func: true }, { input: "Log", tag: "mo", output: "log", tex: null, ttype: UNARY, func: true }, { input: "Ln", tag: "mo", output: "ln", tex: null, ttype: UNARY, func: true }, { input: "Abs", tag: "mo", output: "abs", tex: null, ttype: UNARY, notexcopy: true, rewriteleftright: ["|", "|"] }, { input: "det", tag: "mo", output: "det", tex: null, ttype: UNARY, func: true }, { input: "exp", tag: "mo", output: "exp", tex: null, ttype: UNARY, func: true }, { input: "dim", tag: "mo", output: "dim", tex: null, ttype: CONST }, { input: "mod", tag: "mo", output: "mod", tex: "text{mod}", ttype: CONST, notexcopy: true }, { input: "gcd", tag: "mo", output: "gcd", tex: null, ttype: UNARY, func: true }, { input: "lcm", tag: "mo", output: "lcm", tex: "text{lcm}", ttype: UNARY, func: true, notexcopy: true }, { input: "lub", tag: "mo", output: "lub", tex: null, ttype: CONST }, { input: "glb", tag: "mo", output: "glb", tex: null, ttype: CONST }, { input: "min", tag: "mo", output: "min", tex: null, ttype: UNDEROVER }, { input: "max", tag: "mo", output: "max", tex: null, ttype: UNDEROVER },
+
+	//arrows
+	{ input: "uarr", tag: "mo", output: "\u2191", tex: "uparrow", ttype: CONST }, { input: "darr", tag: "mo", output: "\u2193", tex: "downarrow", ttype: CONST }, { input: "rarr", tag: "mo", output: "\u2192", tex: "rightarrow", ttype: CONST }, { input: "->", tag: "mo", output: "\u2192", tex: "to", ttype: CONST }, { input: ">->", tag: "mo", output: "\u21A3", tex: "rightarrowtail", ttype: CONST }, { input: "->>", tag: "mo", output: "\u21A0", tex: "twoheadrightarrow", ttype: CONST }, { input: ">->>", tag: "mo", output: "\u2916", tex: "twoheadrightarrowtail", ttype: CONST }, { input: "|->", tag: "mo", output: "\u21A6", tex: "mapsto", ttype: CONST }, { input: "larr", tag: "mo", output: "\u2190", tex: "leftarrow", ttype: CONST }, { input: "harr", tag: "mo", output: "\u2194", tex: "leftrightarrow", ttype: CONST }, { input: "rArr", tag: "mo", output: "\u21D2", tex: "Rightarrow", ttype: CONST }, { input: "lArr", tag: "mo", output: "\u21D0", tex: "Leftarrow", ttype: CONST }, { input: "hArr", tag: "mo", output: "\u21D4", tex: "Leftrightarrow", ttype: CONST },
+
+	//commands with argument
+	AMsqrt, AMroot, AMfrac, AMdiv, AMover, AMsub, AMsup, { input: "cancel", tag: "menclose", output: "cancel", tex: null, ttype: UNARY }, { input: "Sqrt", tag: "msqrt", output: "sqrt", tex: null, ttype: UNARY }, { input: "hat", tag: "mover", output: "^", tex: null, ttype: UNARY, acc: true }, { input: "bar", tag: "mover", output: "\xAF", tex: "overline", ttype: UNARY, acc: true }, { input: "vec", tag: "mover", output: "\u2192", tex: null, ttype: UNARY, acc: true }, { input: "tilde", tag: "mover", output: "~", tex: null, ttype: UNARY, acc: true }, { input: "dot", tag: "mover", output: ".", tex: null, ttype: UNARY, acc: true }, { input: "ddot", tag: "mover", output: "..", tex: null, ttype: UNARY, acc: true }, { input: "ul", tag: "munder", output: "\u0332", tex: "underline", ttype: UNARY, acc: true }, { input: "ubrace", tag: "munder", output: "\u23DF", tex: "underbrace", ttype: UNARY, acc: true }, { input: "obrace", tag: "mover", output: "\u23DE", tex: "overbrace", ttype: UNARY, acc: true }, AMtext, AMmbox, AMquote,
+	//{input:"var", tag:"mstyle", atname:"fontstyle", atval:"italic", output:"var", tex:null, ttype:UNARY},
+	{ input: "color", tag: "mstyle", ttype: BINARY }, { input: "bb", tag: "mstyle", atname: "mathvariant", atval: "bold", output: "bb", tex: "mathbf", ttype: UNARY, notexcopy: true }, { input: "mathbf", tag: "mstyle", atname: "mathvariant", atval: "bold", output: "mathbf", tex: null, ttype: UNARY }, { input: "sf", tag: "mstyle", atname: "mathvariant", atval: "sans-serif", output: "sf", tex: "mathsf", ttype: UNARY, notexcopy: true }, { input: "mathsf", tag: "mstyle", atname: "mathvariant", atval: "sans-serif", output: "mathsf", tex: null, ttype: UNARY }, { input: "bbb", tag: "mstyle", atname: "mathvariant", atval: "double-struck", output: "bbb", tex: "mathbb", ttype: UNARY, notexcopy: true }, { input: "mathbb", tag: "mstyle", atname: "mathvariant", atval: "double-struck", output: "mathbb", tex: null, ttype: UNARY }, { input: "cc", tag: "mstyle", atname: "mathvariant", atval: "script", output: "cc", tex: "mathcal", ttype: UNARY, notexcopy: true }, { input: "mathcal", tag: "mstyle", atname: "mathvariant", atval: "script", output: "mathcal", tex: null, ttype: UNARY }, { input: "tt", tag: "mstyle", atname: "mathvariant", atval: "monospace", output: "tt", tex: "mathtt", ttype: UNARY, notexcopy: true }, { input: "mathtt", tag: "mstyle", atname: "mathvariant", atval: "monospace", output: "mathtt", tex: null, ttype: UNARY }, { input: "fr", tag: "mstyle", atname: "mathvariant", atval: "fraktur", output: "fr", tex: "mathfrak", ttype: UNARY, notexcopy: true }, { input: "mathfrak", tag: "mstyle", atname: "mathvariant", atval: "fraktur", output: "mathfrak", tex: null, ttype: UNARY }];
+
+	function compareNames(s1, s2) {
+	  if (s1.input > s2.input) return 1;else return -1;
+	}
+
+	var AMnames = []; //list of input symbols
+
+	function AMinitSymbols() {
+	  var i;
+	  var symlen = AMsymbols.length;
+	  for (i = 0; i < symlen; i++) {
+	    if (AMsymbols[i].tex && !(typeof AMsymbols[i].notexcopy == "boolean" && AMsymbols[i].notexcopy)) {
+	      AMsymbols.push({
+	        input: AMsymbols[i].tex,
+	        tag: AMsymbols[i].tag, output: AMsymbols[i].output, ttype: AMsymbols[i].ttype,
+	        acc: AMsymbols[i].acc || false
+	      });
+	    }
+	  }
+	  refreshSymbols();
+	}
+
+	function refreshSymbols() {
+	  var i;
+	  AMsymbols.sort(compareNames);
+	  for (i = 0; i < AMsymbols.length; i++) {
+	    AMnames[i] = AMsymbols[i].input;
+	  }
+	}
+
+	function newcommand(oldstr, newstr) {
+	  AMsymbols.push({ input: oldstr, tag: "mo", output: newstr, tex: null, ttype: DEFINITION });
+	  refreshSymbols();
+	}
+
+	function newsymbol(symbolobj) {
+	  AMsymbols.push(symbolobj);
+	  refreshSymbols();
+	}
+
+	function AMremoveCharsAndBlanks(str, n) {
+	  //remove n characters and any following blanks
+	  var st;
+	  if (str.charAt(n) == "\\" && str.charAt(n + 1) != "\\" && str.charAt(n + 1) != " ") st = str.slice(n + 1);else st = str.slice(n);
+	  for (var i = 0; i < st.length && st.charCodeAt(i) <= 32; i = i + 1) {}
+	  return st.slice(i);
+	}
+
+	function AMposition(arr, str, n) {
+	  // return position >=n where str appears or would be inserted
+	  // assumes arr is sorted
+	  if (n == 0) {
+	    var h, m;
+	    n = -1;
+	    h = arr.length;
+	    while (n + 1 < h) {
+	      m = n + h >> 1;
+	      if (arr[m] < str) n = m;else h = m;
+	    }
+	    return h;
+	  } else for (var i = n; i < arr.length && arr[i] < str; i++) {}
+	  return i; // i=arr.length || arr[i]>=str
+	}
+
+	function AMgetSymbol(str) {
+	  //return maximal initial substring of str that appears in names
+	  //return null if there is none
+	  var k = 0; //new pos
+	  var j = 0; //old pos
+	  var mk; //match pos
+	  var st;
+	  var tagst;
+	  var match = "";
+	  var more = true;
+	  for (var i = 1; i <= str.length && more; i++) {
+	    st = str.slice(0, i); //initial substring of length i
+	    j = k;
+	    k = AMposition(AMnames, st, j);
+	    if (k < AMnames.length && str.slice(0, AMnames[k].length) == AMnames[k]) {
+	      match = AMnames[k];
+	      mk = k;
+	      i = match.length;
+	    }
+	    more = k < AMnames.length && str.slice(0, AMnames[k].length) >= AMnames[k];
+	  }
+	  AMpreviousSymbol = AMcurrentSymbol;
+	  if (match != "") {
+	    AMcurrentSymbol = AMsymbols[mk].ttype;
+	    return AMsymbols[mk];
+	  }
+	  // if str[0] is a digit or - return maxsubstring of digits.digits
+	  AMcurrentSymbol = CONST;
+	  k = 1;
+	  st = str.slice(0, 1);
+	  var integ = true;
+
+	  while ("0" <= st && st <= "9" && k <= str.length) {
+	    st = str.slice(k, k + 1);
+	    k++;
+	  }
+	  if (st == config.decimalsign) {
+	    st = str.slice(k, k + 1);
+	    if ("0" <= st && st <= "9") {
+	      integ = false;
+	      k++;
+	      while ("0" <= st && st <= "9" && k <= str.length) {
+	        st = str.slice(k, k + 1);
+	        k++;
+	      }
+	    }
+	  }
+	  if (integ && k > 1 || k > 2) {
+	    st = str.slice(0, k - 1);
+	    tagst = "mn";
+	  } else {
+	    k = 2;
+	    st = str.slice(0, 1); //take 1 character
+	    tagst = ("A" > st || st > "Z") && ("a" > st || st > "z") ? "mo" : "mi";
+	  }
+	  if (st == "-" && AMpreviousSymbol == INFIX) {
+	    AMcurrentSymbol = INFIX;
+	    return { input: st, tag: tagst, output: st, ttype: UNARY, func: true, val: true };
+	  }
+	  return { input: st, tag: tagst, output: st, ttype: CONST, val: true }; //added val bit
+	}
+
+	function AMTremoveBrackets(node) {
+
+	  var st;
+	  if (node.charAt(0) == '{' && node.charAt(node.length - 1) == '}') {
+	    var leftchop = 0;
+
+	    st = node.substr(1, 5);
+	    if (st == '\\left') {
+	      st = node.charAt(6);
+	      if (st == "(" || st == "[" || st == "{") {
+	        leftchop = 7;
+	      } else {
+	        st = node.substr(6, 7);
+	        if (st == '\\lbrace') {
+	          leftchop = 13;
+	        }
+	      }
+	    } else {
+	      st = node.charAt(1);
+	      if (st == "(" || st == "[") {
+	        leftchop = 2;
+	      }
+	    }
+	    if (leftchop > 0) {
+	      //st = node.charAt(node.length-7);
+	      st = node.substr(node.length - 8);
+	      if (st == "\\right)}" || st == "\\right]}" || st == '\\right.}') {
+	        node = '{' + node.substr(leftchop);
+	        node = node.substr(0, node.length - 8) + '}';
+	      } else if (st == '\\rbrace}') {
+	        node = '{' + node.substr(leftchop);
+	        node = node.substr(0, node.length - 14) + '}';
+	      }
+	    }
+	  }
+	  return node;
+	}
+
+	/*Parsing ASCII math expressions with the following grammar
+	v ::= [A-Za-z] | greek letters | numbers | other constant symbols
+	u ::= sqrt | text | bb | other unary symbols for font commands
+	b ::= frac | root | stackrel         binary symbols
+	l ::= ( | [ | { | (: | {:            left brackets
+	r ::= ) | ] | } | :) | :}            right brackets
+	S ::= v | lEr | uS | bSS             Simple expression
+	I ::= S_S | S^S | S_S^S | S          Intermediate expression
+	E ::= IE | I/I                       Expression
+	Each terminal symbol is translated into a corresponding mathml node.*/
+
+	var AMnestingDepth, AMpreviousSymbol, AMcurrentSymbol;
+
+	function AMTgetTeXsymbol(symb) {
+	  var pre = '';
+	  if (typeof symb.val == "boolean" && symb.val) {
+	    pre = '';
+	  } else {
+	    pre = '\\';
+	  }
+	  if (symb.tex == null) {
+	    //can't remember why this was here.  Breaks /delta /Delta to removed
+	    //return (pre+(pre==''?symb.input:symb.input.toLowerCase()));
+	    return pre + symb.input;
+	  } else {
+	    return pre + symb.tex;
+	  }
+	}
+
+	function AMTparseSexpr(str) {
+	  //parses str and returns [node,tailstr]
+	  var symbol,
+	      node,
+	      result,
+	      i,
+	      st,
+	      // rightvert = false,
+	  newFrag = '';
+	  str = AMremoveCharsAndBlanks(str, 0);
+	  symbol = AMgetSymbol(str); //either a token or a bracket or empty
+	  if (symbol == null || symbol.ttype == RIGHTBRACKET && AMnestingDepth > 0) {
+	    return [null, str];
+	  }
+	  if (symbol.ttype == DEFINITION) {
+	    str = symbol.output + AMremoveCharsAndBlanks(str, symbol.input.length);
+	    symbol = AMgetSymbol(str);
+	  }
+	  switch (symbol.ttype) {
+	    case UNDEROVER:
+	    case CONST:
+	      str = AMremoveCharsAndBlanks(str, symbol.input.length);
+	      var texsymbol = AMTgetTeXsymbol(symbol);
+	      if (texsymbol.charAt(0) == "\\" || symbol.tag == "mo") return [texsymbol, str];else return ['{' + texsymbol + '}', str];
+
+	    case LEFTBRACKET:
+	      //read (expr+)
+	      AMnestingDepth++;
+	      str = AMremoveCharsAndBlanks(str, symbol.input.length);
+
+	      result = AMTparseExpr(str, true);
+	      AMnestingDepth--;
+	      var leftchop = 0;
+	      if (result[0].substr(0, 6) == "\\right") {
+	        st = result[0].charAt(6);
+	        if (st == ")" || st == "]" || st == "}") {
+	          leftchop = 6;
+	        } else if (st == ".") {
+	          leftchop = 7;
+	        } else {
+	          st = result[0].substr(6, 7);
+	          if (st == '\\rbrace') {
+	            leftchop = 13;
+	          }
+	        }
+	      }
+	      if (leftchop > 0) {
+	        result[0] = result[0].substr(leftchop);
+	        if (typeof symbol.invisible == "boolean" && symbol.invisible) node = '{' + result[0] + '}';else {
+	          node = '{' + AMTgetTeXsymbol(symbol) + result[0] + '}';
+	        }
+	      } else {
+	        if (typeof symbol.invisible == "boolean" && symbol.invisible) node = '{\\left.' + result[0] + '}';else {
+	          node = '{\\left' + AMTgetTeXsymbol(symbol) + result[0] + '}';
+	        }
+	      }
+	      return [node, result[1]];
+	    case TEXT:
+	      if (symbol != AMquote) str = AMremoveCharsAndBlanks(str, symbol.input.length);
+	      if (str.charAt(0) == "{") i = str.indexOf("}");else if (str.charAt(0) == "(") i = str.indexOf(")");else if (str.charAt(0) == "[") i = str.indexOf("]");else if (symbol == AMquote) i = str.slice(1).indexOf("\"") + 1;else i = 0;
+	      if (i == -1) i = str.length;
+	      st = str.slice(1, i);
+	      if (st.charAt(0) == " ") {
+	        newFrag = '\\ ';
+	      }
+	      newFrag += '\\text{' + st + '}';
+	      if (st.charAt(st.length - 1) == " ") {
+	        newFrag += '\\ ';
+	      }
+	      str = AMremoveCharsAndBlanks(str, i + 1);
+	      return [newFrag, str];
+	    case UNARY:
+	      str = AMremoveCharsAndBlanks(str, symbol.input.length);
+	      result = AMTparseSexpr(str);
+	      if (result[0] == null) return ['{' + AMTgetTeXsymbol(symbol) + '}', str];
+	      if (typeof symbol.func == "boolean" && symbol.func) {
+	        // functions hack
+	        st = str.charAt(0);
+	        if (st == "^" || st == "_" || st == "/" || st == "|" || st == "," || symbol.input.length == 1 && symbol.input.match(/\w/) && st != "(") {
+	          return ['{' + AMTgetTeXsymbol(symbol) + '}', str];
+	        } else {
+	          node = '{' + AMTgetTeXsymbol(symbol) + '{' + result[0] + '}}';
+	          return [node, result[1]];
+	        }
+	      }
+	      result[0] = AMTremoveBrackets(result[0]);
+	      if (symbol.input == "sqrt") {
+	        // sqrt
+	        return ['\\sqrt{' + result[0] + '}', result[1]];
+	      } else if (symbol.input == "cancel") {
+	        // cancel
+	        return ['\\cancel{' + result[0] + '}', result[1]];
+	      } else if (typeof symbol.rewriteleftright != "undefined") {
+	        // abs, floor, ceil
+	        return ['{\\left' + symbol.rewriteleftright[0] + result[0] + '\\right' + symbol.rewriteleftright[1] + '}', result[1]];
+	      } else if (typeof symbol.acc == "boolean" && symbol.acc) {
+	        // accent
+	        //return ['{'+AMTgetTeXsymbol(symbol)+'{'+result[0]+'}}',result[1]];
+	        return [AMTgetTeXsymbol(symbol) + '{' + result[0] + '}', result[1]];
+	      } else {
+	        // font change command
+	        return ['{' + AMTgetTeXsymbol(symbol) + '{' + result[0] + '}}', result[1]];
+	      }
+	    case BINARY:
+	      str = AMremoveCharsAndBlanks(str, symbol.input.length);
+	      result = AMTparseSexpr(str);
+	      if (result[0] == null) return ['{' + AMTgetTeXsymbol(symbol) + '}', str];
+	      result[0] = AMTremoveBrackets(result[0]);
+	      var result2 = AMTparseSexpr(result[1]);
+	      if (result2[0] == null) return ['{' + AMTgetTeXsymbol(symbol) + '}', str];
+	      result2[0] = AMTremoveBrackets(result2[0]);
+	      if (symbol.input == "color") {
+	        newFrag = '{\\color{' + result[0].replace(/[\{\}]/g, '') + '}' + result2[0] + '}';
+	      } else if (symbol.input == "root") {
+	        newFrag = '{\\sqrt[' + result[0] + ']{' + result2[0] + '}}';
+	      } else {
+	        newFrag = '{' + AMTgetTeXsymbol(symbol) + '{' + result[0] + '}{' + result2[0] + '}}';
+	      }
+	      return [newFrag, result2[1]];
+	    case INFIX:
+	      str = AMremoveCharsAndBlanks(str, symbol.input.length);
+	      return [symbol.output, str];
+	    case SPACE:
+	      str = AMremoveCharsAndBlanks(str, symbol.input.length);
+	      return ['{\\quad\\text{' + symbol.input + '}\\quad}', str];
+	    case LEFTRIGHT:
+	      //    if (rightvert) return [null,str]; else rightvert = true;
+	      AMnestingDepth++;
+	      str = AMremoveCharsAndBlanks(str, symbol.input.length);
+	      result = AMTparseExpr(str, false);
+	      AMnestingDepth--;
+	      var st = "";
+	      st = result[0].charAt(result[0].length - 1);
+	      //alert(result[0].lastChild+"***"+st);
+	      if (st == "|") {
+	        // its an absolute value subterm
+	        node = '{\\left|' + result[0] + '}';
+	        return [node, result[1]];
+	      } else {
+	        // the "|" is a \mid
+	        node = '{\\mid}';
+	        return [node, str];
+	      }
+
+	    default:
+	      //alert("default");
+	      str = AMremoveCharsAndBlanks(str, symbol.input.length);
+	      return ['{' + AMTgetTeXsymbol(symbol) + '}', str];
+	  }
+	}
+
+	function AMTparseIexpr(str) {
+	  var symbol, sym1, sym2, node, result;
+	  str = AMremoveCharsAndBlanks(str, 0);
+	  sym1 = AMgetSymbol(str);
+	  result = AMTparseSexpr(str);
+	  node = result[0];
+	  str = result[1];
+	  symbol = AMgetSymbol(str);
+	  if (symbol.ttype == INFIX && symbol.input != "/") {
+	    str = AMremoveCharsAndBlanks(str, symbol.input.length);
+	    // if (symbol.input == "/") result = AMTparseIexpr(str); else
+	    result = AMTparseSexpr(str);
+	    if (result[0] == null) // show box in place of missing argument
+	      result[0] = '{}';else result[0] = AMTremoveBrackets(result[0]);
+	    str = result[1];
+	    //    if (symbol.input == "/") AMTremoveBrackets(node);
+	    if (symbol.input == "_") {
+	      sym2 = AMgetSymbol(str);
+	      if (sym2.input == "^") {
+	        str = AMremoveCharsAndBlanks(str, sym2.input.length);
+	        var res2 = AMTparseSexpr(str);
+	        res2[0] = AMTremoveBrackets(res2[0]);
+	        str = res2[1];
+	        node = '{' + node;
+	        node += '_{' + result[0] + '}';
+	        node += '^{' + res2[0] + '}';
+	        node += '}';
+	      } else {
+	        node += '_{' + result[0] + '}';
+	      }
+	    } else {
+	      //must be ^
+	      //node = '{'+node+'}^{'+result[0]+'}';
+	      node = node + '^{' + result[0] + '}';
+	    }
+	    if (typeof sym1.func != 'undefined' && sym1.func) {
+	      sym2 = AMgetSymbol(str);
+	      if (sym2.ttype != INFIX && sym2.ttype != RIGHTBRACKET) {
+	        result = AMTparseIexpr(str);
+	        node = '{' + node + result[0] + '}';
+	        str = result[1];
+	      }
+	    }
+	  }
+
+	  return [node, str];
+	}
+
+	function AMTparseExpr(str, rightbracket) {
+	  var symbol,
+	      node,
+	      result,
+	      i,
+	      nodeList = [],
+	      newFrag = '';
+	  var addedright = false;
+	  do {
+	    str = AMremoveCharsAndBlanks(str, 0);
+	    result = AMTparseIexpr(str);
+	    node = result[0];
+	    str = result[1];
+	    symbol = AMgetSymbol(str);
+	    if (symbol.ttype == INFIX && symbol.input == "/") {
+	      str = AMremoveCharsAndBlanks(str, symbol.input.length);
+	      result = AMTparseIexpr(str);
+
+	      if (result[0] == null) // show box in place of missing argument
+	        result[0] = '{}';else result[0] = AMTremoveBrackets(result[0]);
+	      str = result[1];
+	      node = AMTremoveBrackets(node);
+	      node = '\\frac' + '{' + node + '}';
+	      node += '{' + result[0] + '}';
+	      newFrag += node;
+	      symbol = AMgetSymbol(str);
+	    } else if (node != undefined) newFrag += node;
+	  } while ((symbol.ttype != RIGHTBRACKET && (symbol.ttype != LEFTRIGHT || rightbracket) || AMnestingDepth == 0) && symbol != null && symbol.output != "");
+	  if (symbol.ttype == RIGHTBRACKET || symbol.ttype == LEFTRIGHT) {
+	    //    if (AMnestingDepth > 0) AMnestingDepth--;
+	    var len = newFrag.length;
+	    if (len > 2 && newFrag.charAt(0) == '{' && newFrag.indexOf(',') > 0) {
+	      //could be matrix (total rewrite from .js)
+	      var right = newFrag.charAt(len - 2);
+	      if (right == ')' || right == ']') {
+	        var left = newFrag.charAt(6);
+	        if (left == '(' && right == ')' && symbol.output != '}' || left == '[' && right == ']') {
+	          var mxout = '\\matrix{';
+	          var pos = new Array(); //position of commas
+	          pos.push(0);
+	          var matrix = true;
+	          var mxnestingd = 0;
+	          var subpos = [];
+	          subpos[0] = [0];
+	          var lastsubposstart = 0;
+	          var mxanynestingd = 0;
+	          for (i = 1; i < len - 1; i++) {
+	            if (newFrag.charAt(i) == left) mxnestingd++;
+	            if (newFrag.charAt(i) == right) {
+	              mxnestingd--;
+	              if (mxnestingd == 0 && newFrag.charAt(i + 2) == ',' && newFrag.charAt(i + 3) == '{') {
+	                pos.push(i + 2);
+	                lastsubposstart = i + 2;
+	                subpos[lastsubposstart] = [i + 2];
+	              }
+	            }
+	            if (newFrag.charAt(i) == '[' || newFrag.charAt(i) == '(' || newFrag.charAt(i) == '{') {
+	              mxanynestingd++;
+	            }
+	            if (newFrag.charAt(i) == ']' || newFrag.charAt(i) == ')' || newFrag.charAt(i) == '}') {
+	              mxanynestingd--;
+	            }
+	            if (newFrag.charAt(i) == ',' && mxanynestingd == 1) {
+	              subpos[lastsubposstart].push(i);
+	            }
+	            if (mxanynestingd < 0) {
+	              //happens at the end of the row
+	              if (lastsubposstart == i + 1) {
+	                //if at end of row, skip to next row
+	                i++;
+	              } else {
+	                //misformed something - abandon treating as a matrix
+	                matrix = false;
+	              }
+	            }
+	          }
+
+	          pos.push(len);
+	          var lastmxsubcnt = -1;
+	          if (mxnestingd == 0 && pos.length > 0 && matrix) {
+	            for (i = 0; i < pos.length - 1; i++) {
+	              if (i > 0) mxout += '\\\\';
+	              if (i == 0) {
+	                //var subarr = newFrag.substr(pos[i]+7,pos[i+1]-pos[i]-15).split(',');
+	                if (subpos[pos[i]].length == 1) {
+	                  var subarr = [newFrag.substr(pos[i] + 7, pos[i + 1] - pos[i] - 15)];
+	                } else {
+	                  var subarr = [newFrag.substring(pos[i] + 7, subpos[pos[i]][1])];
+	                  for (var j = 2; j < subpos[pos[i]].length; j++) {
+	                    subarr.push(newFrag.substring(subpos[pos[i]][j - 1] + 1, subpos[pos[i]][j]));
+	                  }
+	                  subarr.push(newFrag.substring(subpos[pos[i]][subpos[pos[i]].length - 1] + 1, pos[i + 1] - 8));
+	                }
+	              } else {
+	                //var subarr = newFrag.substr(pos[i]+8,pos[i+1]-pos[i]-16).split(',');
+	                if (subpos[pos[i]].length == 1) {
+	                  var subarr = [newFrag.substr(pos[i] + 8, pos[i + 1] - pos[i] - 16)];
+	                } else {
+	                  var subarr = [newFrag.substring(pos[i] + 8, subpos[pos[i]][1])];
+	                  for (var j = 2; j < subpos[pos[i]].length; j++) {
+	                    subarr.push(newFrag.substring(subpos[pos[i]][j - 1] + 1, subpos[pos[i]][j]));
+	                  }
+	                  subarr.push(newFrag.substring(subpos[pos[i]][subpos[pos[i]].length - 1] + 1, pos[i + 1] - 8));
+	                }
+	              }
+	              if (lastmxsubcnt > 0 && subarr.length != lastmxsubcnt) {
+	                matrix = false;
+	              } else if (lastmxsubcnt == -1) {
+	                lastmxsubcnt = subarr.length;
+	              }
+	              mxout += subarr.join('&');
+	            }
+	          }
+	          mxout += '}';
+
+	          if (matrix) {
+	            newFrag = mxout;
+	          }
+	        }
+	      }
+	    }
+
+	    str = AMremoveCharsAndBlanks(str, symbol.input.length);
+	    if (typeof symbol.invisible != "boolean" || !symbol.invisible) {
+	      node = '\\right' + AMTgetTeXsymbol(symbol); //AMcreateMmlNode("mo",document.createTextNode(symbol.output));
+	      newFrag += node;
+	      addedright = true;
+	    } else {
+	      newFrag += '\\right.';
+	      addedright = true;
+	    }
+	  }
+	  if (AMnestingDepth > 0 && !addedright) {
+	    newFrag += '\\right.'; //adjust for non-matching left brackets
+	    //todo: adjust for non-matching right brackets
+	  }
+
+	  return [newFrag, str];
+	}
+
+	function AMTparseAMtoTeX(str) {
+	  AMnestingDepth = 0;
+	  str = str.replace(/(&nbsp;|\u00a0|&#160;)/g, "");
+	  str = str.replace(/&gt;/g, ">");
+	  str = str.replace(/&lt;/g, "<");
+	  if (str.match(/\S/) == null) {
+	    return "";
+	  }
+	  return AMTparseExpr(str.replace(/^\s+/g, ""), false)[0];
+	}
+
+	function AMparseMath(str) {
+	  //DLMOD to remove &nbsp;, which editor adds on multiple spaces
+	  str = str.replace(/(&nbsp;|\u00a0|&#160;)/g, "");
+	  str = str.replace(/&gt;/g, ">");
+	  str = str.replace(/&lt;/g, "<");
+	  if (str.match(/\S/) == null) {
+	    return document.createTextNode(" ");
+	  }
+	  var texstring = AMTparseAMtoTeX(str);
+	  if (typeof mathbg != "undefined" && mathbg == 'dark') {
+	    texstring = "\\reverse " + texstring;
+	  }
+	  if (config.mathcolor != "") {
+	    texstring = "\\" + config.mathcolor + texstring;
+	  }
+	  if (config.displaystyle) {
+	    texstring = "\\displaystyle" + texstring;
+	  } else {
+	    texstring = "\\textstyle" + texstring;
+	  }
+	  texstring = texstring.replace('$', '\\$');
+
+	  var node = document.createElement("img");
+	  if (typeof encodeURIComponent == "function") {
+	    texstring = encodeURIComponent(texstring);
+	  } else {
+	    texstring = escape(texstring);
+	  }
+	  node.src = AMTcgiloc + '?' + texstring;
+	  node.style.verticalAlign = "middle";
+	  if (config.showasciiformulaonhover) //fixed by djhsu so newline
+	    node.setAttribute("title", str.replace(/\s+/g, " ")); //does not show in Gecko
+
+	  var snode = document.createElement("span");
+	  snode.appendChild(node); //chg
+	  return snode;
+	}
+	//alias to align with wFallback function
+	function AMTparseMath(str) {
+	  return AMparseMath(str);
+	}
+
+	function AMstrarr2docFrag(arr, linebreaks) {
+	  var newFrag = document.createDocumentFragment();
+	  var expr = false;
+	  for (var i = 0; i < arr.length; i++) {
+	    if (expr) newFrag.appendChild(AMparseMath(arr[i]));else {
+	      var arri = linebreaks ? arr[i].split("\n\n") : [arr[i]];
+	      newFrag.appendChild(document.createElement("span").appendChild(document.createTextNode(arri[0])));
+	      for (var j = 1; j < arri.length; j++) {
+	        newFrag.appendChild(document.createElement("p"));
+	        newFrag.appendChild(document.createElement("span").appendChild(document.createTextNode(arri[j])));
+	      }
+	    }
+	    expr = !expr;
+	  }
+	  return newFrag;
+	}
+
+	function AMprocessNodeR(n, linebreaks) {
+	  var mtch, str, arr, frg, i;
+	  if (n.childNodes.length == 0) {
+	    if ((n.nodeType != 8 || linebreaks) && n.parentNode.nodeName != "form" && n.parentNode.nodeName != "FORM" && n.parentNode.nodeName != "textarea" && n.parentNode.nodeName != "TEXTAREA" && n.parentNode.nodeName != "pre" && n.parentNode.nodeName != "PRE") {
+	      str = n.nodeValue;
+	      if (!(str == null)) {
+	        str = str.replace(/\r\n\r\n/g, "\n\n");
+	        if (config.doubleblankmathdelimiter) {
+	          str = str.replace(/\x20\x20\./g, " " + config.AMdelimiter1 + ".");
+	          str = str.replace(/\x20\x20,/g, " " + config.AMdelimiter1 + ",");
+	          str = str.replace(/\x20\x20/g, " " + config.AMdelimiter1 + " ");
+	        }
+	        str = str.replace(/\x20+/g, " ");
+	        str = str.replace(/\s*\r\n/g, " ");
+	        mtch = false;
+	        if (config.AMusedelimiter2) {
+	          str = str.replace(new RegExp(config.AMescape2, "g"), function (st) {
+	            mtch = true;return "AMescape2";
+	          });
+	        }
+	        str = str.replace(new RegExp(config.AMescape1, "g"), function (st) {
+	          mtch = true;return "AMescape1";
+	        });
+	        if (config.AMusedelimiter2) str = str.replace(new RegExp(config.AMdelimiter2regexp, "g"), config.AMdelimiter1);
+	        arr = str.split(config.AMdelimiter1);
+	        for (i = 0; i < arr.length; i++) {
+	          if (config.AMusedelimiter2) {
+	            arr[i] = arr[i].replace(/AMescape2/g, config.AMdelimiter2).replace(/AMescape1/g, config.AMdelimiter1);
+	          } else {
+	            arr[i] = arr[i].replace(/AMescape1/g, config.AMdelimiter1);
+	          }
+	        }if (arr.length > 1 || mtch) {
+
+	          frg = AMstrarr2docFrag(arr, n.nodeType == 8);
+	          var len = frg.childNodes.length;
+	          n.parentNode.replaceChild(frg, n);
+	          return len - 1;
+	        }
+	      }
+	    } else return 0;
+	  } else if (n.nodeName != "math") {
+	    //should this change to img?
+	    for (i = 0; i < n.childNodes.length; i++) {
+	      i += AMprocessNodeR(n.childNodes[i], linebreaks);
+	    }
+	  }
+	  return 0;
+	}
+
+	function AMprocessNode(n, linebreaks, spanclassAM) {
+	  var frag, st;
+	  if (spanclassAM != null) {
+	    frag = document.getElementsByTagName("span");
+	    for (var i = 0; i < frag.length; i++) {
+	      if (frag[i].className == "AM") AMprocessNodeR(frag[i], linebreaks);
+	    }
+	  } else {
+	    try {
+	      st = n.innerHTML;
+	    } catch (err) {}
+	    if (st == null || st.indexOf(config.AMdelimiter1) != -1) // || st.indexOf(config.AMdelimiter2)!=-1)
+	      AMprocessNodeR(n, linebreaks);
+	  }
+	}
+
+	function translate(spanclassAM) {
+	  if (!AMtranslated) {
+	    // run this only once
+	    AMtranslated = true;
+	    var body = document.getElementsByTagName("body")[0];
+	    var processN = document.getElementById(config.AMdocumentId);
+	    AMprocessNode(processN != null ? processN : body, false, spanclassAM);
+	  }
+	}
+
+	var AMbody;
+	var AMtranslated = false;
+	var AMnoMathML = true;
+
+	AMinitSymbols();
+
+	function generic() {
+	  if (config.translateOnLoad) {
+	    translate();
+	  }
+	}
+
+	//setup onload function
+	if (typeof window.addEventListener != 'undefined') {
+	  //.. gecko, safari, konqueror and standard
+	  window.addEventListener('load', generic, false);
+	} else if (typeof document.addEventListener != 'undefined') {
+	  //.. opera 7
+	  document.addEventListener('load', generic, false);
+	} else if (typeof window.attachEvent != 'undefined') {
+	  //.. win/ie
+	  window.attachEvent('onload', generic);
+	} else {
+	  //.. mac/ie5 and anything else that gets this far
+	  //if there's an existing onload function
+	  if (typeof window.onload == 'function') {
+	    //store it
+	    var existing = onload;
+	    //add new onload handler
+	    window.onload = function () {
+	      //call existing onload function
+	      existing();
+	      //call generic onload function
+	      generic();
+	    };
+	  } else {
+	    window.onload = generic;
+	  }
+	}
+
+	exports.default = AMTparseAMtoTeX;
+
+/***/ }
+/******/ ]);
