@@ -46,9 +46,6 @@
 
 	"use strict";
 
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
 	var config = {
 	  translateOnLoad: true, //true to autotranslate
 	  mathcolor: "", // defaults to back, or specify any other color
@@ -806,35 +803,7 @@
 	  }
 	}
 
-	//setup onload function
-	if (typeof window.addEventListener != 'undefined') {
-	  //.. gecko, safari, konqueror and standard
-	  window.addEventListener('load', generic, false);
-	} else if (typeof document.addEventListener != 'undefined') {
-	  //.. opera 7
-	  document.addEventListener('load', generic, false);
-	} else if (typeof window.attachEvent != 'undefined') {
-	  //.. win/ie
-	  window.attachEvent('onload', generic);
-	} else {
-	  //.. mac/ie5 and anything else that gets this far
-	  //if there's an existing onload function
-	  if (typeof window.onload == 'function') {
-	    //store it
-	    var existing = onload;
-	    //add new onload handler
-	    window.onload = function () {
-	      //call existing onload function
-	      existing();
-	      //call generic onload function
-	      generic();
-	    };
-	  } else {
-	    window.onload = generic;
-	  }
-	}
-
-	exports.default = AMTparseAMtoTeX;
+	module.exports = AMTparseAMtoTeX;
 
 /***/ }
 /******/ ]);
