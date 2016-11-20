@@ -831,7 +831,7 @@
 	  }
 	}
 
-	module.exports = AMTparseAMtoTeX;
+	module.exports = { AMTparseAMtoTeX: AMTparseAMtoTeX };
 
 /***/ }
 /******/ ]);
