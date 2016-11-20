@@ -1,8 +1,8 @@
 {
   "name": "asciimath-to-latex",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "AsciiMath to LaTex converter",
-  "main": "index.js",
+  "main": "index.bundle.js",
   "scripts": {
     "dev": "webpack --progress --colors --watch"
   },
