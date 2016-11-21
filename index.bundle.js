@@ -56,6 +56,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	var config = {
 	  translateOnLoad: true, //true to autotranslate
 	  mathcolor: "", // defaults to back, or specify any other color
@@ -813,7 +816,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	}
 
-	module.exports = AMTparseAMtoTeX;
+	exports.default = AMTparseAMtoTeX;
 
 /***/ }
 /******/ ])

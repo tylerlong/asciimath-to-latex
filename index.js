@@ -974,4 +974,4 @@ function generic() {
   }
 }
 
-module.exports = AMTparseAMtoTeX;
+export default AMTparseAMtoTeX;
