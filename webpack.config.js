@@ -3,7 +3,7 @@ module.exports = {
   output: {
     path: __dirname,
     filename: 'index.bundle.js',
-    libraryTarget: 'umd',
+    libraryTarget: 'commonjs2',
   },
   module: {
     loaders: [
