@@ -1,8 +1,9 @@
 module.exports = {
-  entry: "./index.js",
+  entry: './index.js',
   output: {
     path: __dirname,
-    filename: "index.bundle.js",
+    filename: 'index.bundle.js',
+    libraryTarget: 'umd',
   },
   module: {
     loaders: [
@@ -16,5 +17,4 @@ module.exports = {
       },
     ],
   },
-  target: 'node',
 };
