@@ -1,6 +1,6 @@
 {
   "name": "asciimath-to-latex",
-  "version": "0.2.2",
+  "version": "0.2.4",
   "description": "AsciiMath to LaTex converter",
   "main": "index.bundle.js",
   "scripts": {
