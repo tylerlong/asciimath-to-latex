@@ -3,6 +3,9 @@
   "version": "0.3.0",
   "description": "AsciiMath to LaTex converter",
   "main": "index.js",
+  "scripts": {
+    "build": "webpack --progress --colors --watch"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tylerlong/asciimath-to-latex.git"
@@ -12,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/tylerlong/asciimath-to-latex/issues"
   },
-  "homepage": "https://github.com/tylerlong/asciimath-to-latex#readme"
+  "homepage": "https://github.com/tylerlong/asciimath-to-latex#readme",
+  "devDependencies": {
+    "webpack": "^1.14.0"
+  }
 }
