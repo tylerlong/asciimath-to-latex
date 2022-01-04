@@ -899,29 +899,13 @@ function refreshSymbols() {
   }
 }
 
-function newcommand(oldstr: string, newstr: string) {
-  AMsymbols.push({
-    input: oldstr,
-    tag: 'mo',
-    output: newstr,
-    tex: null,
-    ttype: DEFINITION,
-  });
-  refreshSymbols();
-}
-
-function newsymbol(symbolobj: AMSymbol) {
-  AMsymbols.push(symbolobj);
-  refreshSymbols();
-}
-
 function AMremoveCharsAndBlanks(str: string, n: number) {
   //remove n characters and any following blanks
   let st;
   if (
-    str.charAt(n) == '\\' &&
-    str.charAt(n + 1) != '\\' &&
-    str.charAt(n + 1) != ' '
+    str.charAt(n) === '\\' &&
+    str.charAt(n + 1) !== '\\' &&
+    str.charAt(n + 1) !== ' '
   )
     st = str.slice(n + 1);
   else st = str.slice(n);
@@ -932,7 +916,7 @@ function AMremoveCharsAndBlanks(str: string, n: number) {
 function AMposition(arr: string[], str: string, n: number) {
   // return position >=n where str appears or would be inserted
   // assumes arr is sorted
-  if (n == 0) {
+  if (n === 0) {
     let h, m;
     n = -1;
     h = arr.length;
@@ -960,7 +944,7 @@ function AMgetSymbol(str: string): AMSymbol {
     st = str.slice(0, i); //initial substring of length i
     j = k;
     k = AMposition(AMnames, st, j);
-    if (k < AMnames.length && str.slice(0, AMnames[k].length) == AMnames[k]) {
+    if (k < AMnames.length && str.slice(0, AMnames[k].length) === AMnames[k]) {
       match = AMnames[k];
       mk = k;
       i = match.length;
@@ -968,7 +952,7 @@ function AMgetSymbol(str: string): AMSymbol {
     more = k < AMnames.length && str.slice(0, AMnames[k].length) >= AMnames[k];
   }
   AMpreviousSymbol = AMcurrentSymbol;
-  if (match != '') {
+  if (match !== '') {
     AMcurrentSymbol = AMsymbols[mk].ttype as number;
     return AMsymbols[mk];
   }
@@ -982,7 +966,7 @@ function AMgetSymbol(str: string): AMSymbol {
     st = str.slice(k, k + 1);
     k++;
   }
-  if (st == config.decimalsign) {
+  if (st === config.decimalsign) {
     st = str.slice(k, k + 1);
     if ('0' <= st && st <= '9') {
       integ = false;
@@ -1001,7 +985,7 @@ function AMgetSymbol(str: string): AMSymbol {
     st = str.slice(0, 1); //take 1 character
     tagst = ('A' > st || st > 'Z') && ('a' > st || st > 'z') ? 'mo' : 'mi';
   }
-  if (st == '-' && AMpreviousSymbol == INFIX) {
+  if (st === '-' && AMpreviousSymbol === INFIX) {
     AMcurrentSymbol = INFIX;
     return {
       input: st,
@@ -1025,33 +1009,33 @@ function AMgetSymbol(str: string): AMSymbol {
 
 function AMTremoveBrackets(node: string) {
   let st;
-  if (node.charAt(0) == '{' && node.charAt(node.length - 1) == '}') {
+  if (node.charAt(0) === '{' && node.charAt(node.length - 1) === '}') {
     let leftchop = 0;
 
     st = node.substr(1, 5);
-    if (st == '\\left') {
+    if (st === '\\left') {
       st = node.charAt(6);
-      if (st == '(' || st == '[' || st == '{') {
+      if (st === '(' || st === '[' || st === '{') {
         leftchop = 7;
       } else {
         st = node.substr(6, 7);
-        if (st == '\\lbrace') {
+        if (st === '\\lbrace') {
           leftchop = 13;
         }
       }
     } else {
       st = node.charAt(1);
-      if (st == '(' || st == '[') {
+      if (st === '(' || st === '[') {
         leftchop = 2;
       }
     }
     if (leftchop > 0) {
       //st = node.charAt(node.length-7);
       st = node.substr(node.length - 8);
-      if (st == '\\right)}' || st == '\\right]}' || st == '\\right.}') {
+      if (st === '\\right)}' || st === '\\right]}' || st === '\\right.}') {
         node = '{' + node.substr(leftchop);
         node = node.substr(0, node.length - 8) + '}';
-      } else if (st == '\\rbrace}') {
+      } else if (st === '\\rbrace}') {
         node = '{' + node.substr(leftchop);
         node = node.substr(0, node.length - 14) + '}';
       }
@@ -1080,7 +1064,7 @@ function AMTgetTeXsymbol(symb: AMSymbol) {
   } else {
     pre = '\\';
   }
-  if (symb.tex == null) {
+  if (symb.tex === null) {
     //can't remember why this was here.  Breaks /delta /Delta to removed
     //return (pre+(pre==''?symb.input:symb.input.toLowerCase()));
     return pre + symb.input;
@@ -1099,10 +1083,13 @@ function AMTparseSexpr(str: string): [string | null | undefined, string] {
     newFrag = '';
   str = AMremoveCharsAndBlanks(str, 0);
   symbol = AMgetSymbol(str); //either a token or a bracket or empty
-  if (symbol == null || (symbol.ttype == RIGHTBRACKET && AMnestingDepth > 0)) {
+  if (
+    symbol === null ||
+    (symbol.ttype === RIGHTBRACKET && AMnestingDepth > 0)
+  ) {
     return [null, str];
   }
-  if (symbol.ttype == DEFINITION) {
+  if (symbol.ttype === DEFINITION) {
     str = symbol.output + AMremoveCharsAndBlanks(str, symbol.input.length);
     symbol = AMgetSymbol(str);
   }
@@ -1111,7 +1098,7 @@ function AMTparseSexpr(str: string): [string | null | undefined, string] {
     case CONST:
       str = AMremoveCharsAndBlanks(str, symbol.input.length);
       var texsymbol = AMTgetTeXsymbol(symbol);
-      if (texsymbol.charAt(0) == '\\' || symbol.tag == 'mo')
+      if (texsymbol.charAt(0) === '\\' || symbol.tag === 'mo')
         return [texsymbol, str];
       else return ['{' + texsymbol + '}', str];
 
@@ -1122,15 +1109,15 @@ function AMTparseSexpr(str: string): [string | null | undefined, string] {
       result = AMTparseExpr(str, true);
       AMnestingDepth--;
       var leftchop = 0;
-      if (result[0].substr(0, 6) == '\\right') {
+      if (result[0].substr(0, 6) === '\\right') {
         st = result[0].charAt(6);
-        if (st == ')' || st == ']' || st == '}') {
+        if (st === ')' || st === ']' || st === '}') {
           leftchop = 6;
-        } else if (st == '.') {
+        } else if (st === '.') {
           leftchop = 7;
         } else {
           st = result[0].substr(6, 7);
-          if (st == '\\rbrace') {
+          if (st === '\\rbrace') {
             leftchop = 13;
           }
         }
@@ -1151,20 +1138,20 @@ function AMTparseSexpr(str: string): [string | null | undefined, string] {
       }
       return [node, result[1]];
     case TEXT:
-      if (symbol != AMquote)
+      if (symbol !== AMquote)
         str = AMremoveCharsAndBlanks(str, symbol.input.length);
-      if (str.charAt(0) == '{') i = str.indexOf('}');
-      else if (str.charAt(0) == '(') i = str.indexOf(')');
-      else if (str.charAt(0) == '[') i = str.indexOf(']');
-      else if (symbol == AMquote) i = str.slice(1).indexOf('"') + 1;
+      if (str.charAt(0) === '{') i = str.indexOf('}');
+      else if (str.charAt(0) === '(') i = str.indexOf(')');
+      else if (str.charAt(0) === '[') i = str.indexOf(']');
+      else if (symbol === AMquote) i = str.slice(1).indexOf('"') + 1;
       else i = 0;
-      if (i == -1) i = str.length;
+      if (i === -1) i = str.length;
       st = str.slice(1, i);
-      if (st.charAt(0) == ' ') {
+      if (st.charAt(0) === ' ') {
         newFrag = '\\ ';
       }
       newFrag += '\\text{' + st + '}';
-      if (st.charAt(st.length - 1) == ' ') {
+      if (st.charAt(st.length - 1) === ' ') {
         newFrag += '\\ ';
       }
       str = AMremoveCharsAndBlanks(str, i + 1);
@@ -1172,17 +1159,17 @@ function AMTparseSexpr(str: string): [string | null | undefined, string] {
     case UNARY:
       str = AMremoveCharsAndBlanks(str, symbol.input.length);
       result = AMTparseSexpr(str);
-      if (result[0] == null) return ['{' + AMTgetTeXsymbol(symbol) + '}', str];
+      if (result[0] === null) return ['{' + AMTgetTeXsymbol(symbol) + '}', str];
       if (typeof symbol.func === 'boolean' && symbol.func) {
         // functions hack
         st = str.charAt(0);
         if (
-          st == '^' ||
-          st == '_' ||
-          st == '/' ||
-          st == '|' ||
-          st == ',' ||
-          (symbol.input.length == 1 && symbol.input.match(/\w/) && st != '(')
+          st === '^' ||
+          st === '_' ||
+          st === '/' ||
+          st === '|' ||
+          st === ',' ||
+          (symbol.input.length === 1 && symbol.input.match(/\w/) && st !== '(')
         ) {
           return ['{' + AMTgetTeXsymbol(symbol) + '}', str];
         } else {
@@ -1190,11 +1177,11 @@ function AMTparseSexpr(str: string): [string | null | undefined, string] {
           return [node, result[1]];
         }
       }
-      result[0] = AMTremoveBrackets(result[0]);
-      if (symbol.input == 'sqrt') {
+      result[0] = AMTremoveBrackets(result[0] as string);
+      if (symbol.input === 'sqrt') {
         // sqrt
         return ['\\sqrt{' + result[0] + '}', result[1]];
-      } else if (symbol.input == 'cancel') {
+      } else if (symbol.input === 'cancel') {
         // cancel
         return ['\\cancel{' + result[0] + '}', result[1]];
       } else if (typeof symbol.rewriteleftright !== 'undefined') {
@@ -1222,19 +1209,20 @@ function AMTparseSexpr(str: string): [string | null | undefined, string] {
     case BINARY:
       str = AMremoveCharsAndBlanks(str, symbol.input.length);
       result = AMTparseSexpr(str);
-      if (result[0] == null) return ['{' + AMTgetTeXsymbol(symbol) + '}', str];
-      result[0] = AMTremoveBrackets(result[0]);
+      if (result[0] === null) return ['{' + AMTgetTeXsymbol(symbol) + '}', str];
+      result[0] = AMTremoveBrackets(result[0] as string);
       var result2 = AMTparseSexpr(result[1]);
-      if (result2[0] == null) return ['{' + AMTgetTeXsymbol(symbol) + '}', str];
-      result2[0] = AMTremoveBrackets(result2[0]);
-      if (symbol.input == 'color') {
+      if (result2[0] === null)
+        return ['{' + AMTgetTeXsymbol(symbol) + '}', str];
+      result2[0] = AMTremoveBrackets(result2[0] as string);
+      if (symbol.input === 'color') {
         newFrag =
           '{\\color{' +
           result[0].replace(/[\{\}]/g, '') +
           '}' +
           result2[0] +
           '}';
-      } else if (symbol.input == 'root') {
+      } else if (symbol.input === 'root') {
         newFrag = '{\\sqrt[' + result[0] + ']{' + result2[0] + '}}';
       } else {
         newFrag =
@@ -1262,7 +1250,7 @@ function AMTparseSexpr(str: string): [string | null | undefined, string] {
       st = '';
       st = result[0].charAt(result[0].length - 1);
       //alert(result[0].lastChild+"***"+st);
-      if (st == '|') {
+      if (st === '|') {
         // its an absolute value subterm
         node = '{\\left|' + result[0] + '}';
         return [node, result[1]];
@@ -1287,19 +1275,19 @@ function AMTparseIexpr(str: string): [string, string] {
   node = result[0];
   str = result[1];
   symbol = AMgetSymbol(str);
-  if (symbol.ttype == INFIX && symbol.input != '/') {
+  if (symbol.ttype === INFIX && symbol.input !== '/') {
     str = AMremoveCharsAndBlanks(str, symbol.input.length);
-    // if (symbol.input == "/") result = AMTparseIexpr(str); else
+    // if (symbol.input === "/") result = AMTparseIexpr(str); else
     result = AMTparseSexpr(str);
-    if (result[0] == null)
+    if (result[0] === null)
       // show box in place of missing argument
       result[0] = '{}';
-    else result[0] = AMTremoveBrackets(result[0]);
+    else result[0] = AMTremoveBrackets(result[0] as string);
     str = result[1];
-    //    if (symbol.input == "/") AMTremoveBrackets(node);
-    if (symbol.input == '_') {
+    //    if (symbol.input === "/") AMTremoveBrackets(node);
+    if (symbol.input === '_') {
       sym2 = AMgetSymbol(str);
-      if (sym2.input == '^') {
+      if (sym2.input === '^') {
         str = AMremoveCharsAndBlanks(str, sym2.input.length);
         const res2 = AMTparseSexpr(str);
         res2[0] = AMTremoveBrackets(res2[0] as string);
@@ -1318,7 +1306,7 @@ function AMTparseIexpr(str: string): [string, string] {
     }
     if (typeof sym1.func !== 'undefined' && sym1.func) {
       sym2 = AMgetSymbol(str);
-      if (sym2.ttype != INFIX && sym2.ttype != RIGHTBRACKET) {
+      if (sym2.ttype !== INFIX && sym2.ttype !== RIGHTBRACKET) {
         result = AMTparseIexpr(str);
         node = '{' + node + result[0] + '}';
         str = result[1];
@@ -1334,7 +1322,6 @@ function AMTparseExpr(str: string, rightbracket: number | boolean) {
     node,
     result,
     i,
-    nodeList = [],
     newFrag = '';
   let addedright = false;
   do {
@@ -1343,11 +1330,11 @@ function AMTparseExpr(str: string, rightbracket: number | boolean) {
     node = result[0];
     str = result[1];
     symbol = AMgetSymbol(str);
-    if (symbol.ttype == INFIX && symbol.input == '/') {
+    if (symbol.ttype === INFIX && symbol.input === '/') {
       str = AMremoveCharsAndBlanks(str, symbol.input.length);
       result = AMTparseIexpr(str);
 
-      if (result[0] == null)
+      if (result[0] === null)
         // show box in place of missing argument
         result[0] = '{}';
       else result[0] = AMTremoveBrackets(result[0]);
@@ -1357,25 +1344,25 @@ function AMTparseExpr(str: string, rightbracket: number | boolean) {
       node += '{' + result[0] + '}';
       newFrag += node;
       symbol = AMgetSymbol(str);
-    } else if (node != undefined) newFrag += node;
+    } else if (node !== undefined) newFrag += node;
   } while (
-    ((symbol.ttype != RIGHTBRACKET &&
-      (symbol.ttype != LEFTRIGHT || rightbracket)) ||
-      AMnestingDepth == 0) &&
-    symbol != null &&
-    symbol.output != ''
+    ((symbol.ttype !== RIGHTBRACKET &&
+      (symbol.ttype !== LEFTRIGHT || rightbracket)) ||
+      AMnestingDepth === 0) &&
+    symbol !== null &&
+    symbol.output !== ''
   );
-  if (symbol.ttype == RIGHTBRACKET || symbol.ttype == LEFTRIGHT) {
+  if (symbol.ttype === RIGHTBRACKET || symbol.ttype === LEFTRIGHT) {
     //    if (AMnestingDepth > 0) AMnestingDepth--;
     const len = newFrag.length;
-    if (len > 2 && newFrag.charAt(0) == '{' && newFrag.indexOf(',') > 0) {
+    if (len > 2 && newFrag.charAt(0) === '{' && newFrag.indexOf(',') > 0) {
       //could be matrix (total rewrite from .js)
       const right = newFrag.charAt(len - 2);
-      if (right == ')' || right == ']') {
+      if (right === ')' || right === ']') {
         const left = newFrag.charAt(6);
         if (
-          (left == '(' && right == ')' && symbol.output != '}') ||
-          (left == '[' && right == ']')
+          (left === '(' && right === ')' && symbol.output !== '}') ||
+          (left === '[' && right === ']')
         ) {
           let mxout = '\\begin{matrix}';
           const pos = []; //position of commas
@@ -1387,13 +1374,13 @@ function AMTparseExpr(str: string, rightbracket: number | boolean) {
           let lastsubposstart = 0;
           let mxanynestingd = 0;
           for (i = 1; i < len - 1; i++) {
-            if (newFrag.charAt(i) == left) mxnestingd++;
-            if (newFrag.charAt(i) == right) {
+            if (newFrag.charAt(i) === left) mxnestingd++;
+            if (newFrag.charAt(i) === right) {
               mxnestingd--;
               if (
-                mxnestingd == 0 &&
-                newFrag.charAt(i + 2) == ',' &&
-                newFrag.charAt(i + 3) == '{'
+                mxnestingd === 0 &&
+                newFrag.charAt(i + 2) === ',' &&
+                newFrag.charAt(i + 3) === '{'
               ) {
                 pos.push(i + 2);
                 lastsubposstart = i + 2;
@@ -1401,25 +1388,25 @@ function AMTparseExpr(str: string, rightbracket: number | boolean) {
               }
             }
             if (
-              newFrag.charAt(i) == '[' ||
-              newFrag.charAt(i) == '(' ||
-              newFrag.charAt(i) == '{'
+              newFrag.charAt(i) === '[' ||
+              newFrag.charAt(i) === '(' ||
+              newFrag.charAt(i) === '{'
             ) {
               mxanynestingd++;
             }
             if (
-              newFrag.charAt(i) == ']' ||
-              newFrag.charAt(i) == ')' ||
-              newFrag.charAt(i) == '}'
+              newFrag.charAt(i) === ']' ||
+              newFrag.charAt(i) === ')' ||
+              newFrag.charAt(i) === '}'
             ) {
               mxanynestingd--;
             }
-            if (newFrag.charAt(i) == ',' && mxanynestingd == 1) {
+            if (newFrag.charAt(i) === ',' && mxanynestingd === 1) {
               subpos[lastsubposstart].push(i);
             }
             if (mxanynestingd < 0) {
               //happens at the end of the row
-              if (lastsubposstart == i + 1) {
+              if (lastsubposstart === i + 1) {
                 //if at end of row, skip to next row
                 i++;
               } else {
@@ -1431,12 +1418,12 @@ function AMTparseExpr(str: string, rightbracket: number | boolean) {
 
           pos.push(len);
           let lastmxsubcnt = -1;
-          if (mxnestingd == 0 && pos.length > 0 && matrix) {
+          if (mxnestingd === 0 && pos.length > 0 && matrix) {
             for (i = 0; i < pos.length - 1; i++) {
               if (i > 0) mxout += '\\\\';
-              if (i == 0) {
+              if (i === 0) {
                 //var subarr = newFrag.substr(pos[i]+7,pos[i+1]-pos[i]-15).split(',');
-                if (subpos[pos[i]].length == 1) {
+                if (subpos[pos[i]].length === 1) {
                   var subarr = [
                     newFrag.substr(pos[i] + 7, pos[i + 1] - pos[i] - 15),
                   ];
@@ -1461,7 +1448,7 @@ function AMTparseExpr(str: string, rightbracket: number | boolean) {
                 }
               } else {
                 //var subarr = newFrag.substr(pos[i]+8,pos[i+1]-pos[i]-16).split(',');
-                if (subpos[pos[i]].length == 1) {
+                if (subpos[pos[i]].length === 1) {
                   var subarr = [
                     newFrag.substr(pos[i] + 8, pos[i + 1] - pos[i] - 16),
                   ];
@@ -1485,9 +1472,9 @@ function AMTparseExpr(str: string, rightbracket: number | boolean) {
                   );
                 }
               }
-              if (lastmxsubcnt > 0 && subarr.length != lastmxsubcnt) {
+              if (lastmxsubcnt > 0 && subarr.length !== lastmxsubcnt) {
                 matrix = false;
-              } else if (lastmxsubcnt == -1) {
+              } else if (lastmxsubcnt === -1) {
                 lastmxsubcnt = subarr.length;
               }
               mxout += subarr.join('&');
@@ -1525,14 +1512,11 @@ function AMTparseAMtoTeX(str: string) {
   str = str.replace(/(&nbsp;|\u00a0|&#160;)/g, '');
   str = str.replace(/&gt;/g, '>');
   str = str.replace(/&lt;/g, '<');
-  if (str.match(/\S/) == null) {
+  if (str.match(/\S/) === null) {
     return '';
   }
   return AMTparseExpr(str.replace(/^\s+/g, ''), false)[0];
 }
-
-const AMtranslated = false;
-const AMnoMathML = true;
 
 AMinitSymbols();
 
