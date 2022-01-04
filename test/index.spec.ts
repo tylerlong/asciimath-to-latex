@@ -1,7 +1,7 @@
 import asciimath2latex from '../src';
 
-describe('Address Book', () => {
-  test('contacts', async () => {
+describe('AsciiMatho to LaTeX', () => {
+  test('default', async () => {
     const asciimath = '2=(((3-x)xx2)/(3-x))';
     const latex = asciimath2latex(asciimath);
     expect(latex).toBe(
