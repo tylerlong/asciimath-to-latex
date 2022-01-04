@@ -1,10 +1,12 @@
 {
   "name": "asciimath-to-latex",
-  "version": "0.4.0",
-  "description": "AsciiMath to LaTex converter",
-  "main": "index.js",
+  "version": "0.5.0",
+  "description": "AsciiMath to LaTeX converter",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
-    "test": "ts-node test/index.ts"
+    "test": "ts-node test/index.ts",
+    "prepublishOnly": "tsc"
   },
   "repository": {
     "type": "git",

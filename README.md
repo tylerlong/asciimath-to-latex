@@ -1,6 +1,6 @@
-# AsciiMath to LaTex converter
+# AsciiMath to LaTeX converter
 
-[AsciiMath](http://asciimath.org/) to [LaText](https://www.latex-project.org/) converter.
+[AsciiMath](http://asciimath.org/) to [LaTeX](https://www.latex-project.org/) converter.
 
 
 ## Installation
@@ -19,3 +19,8 @@ console.log(`asciimath: ${asciimath}`)
 const latex = asciimath2latex(asciimath)
 console.log(`latex: ${latex}`)
 ```
+
+
+## Credits
+
+I forgot where I copied the original code from. It's probably [here](https://github.com/asciimath/asciimathml/blob/master/asciimath-based/ASCIIMathTeXImg.js).
