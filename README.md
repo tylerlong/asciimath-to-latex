@@ -10,16 +10,21 @@ yarn add asciimath-to-latex
 ```
 
 
-## Usage
+# Import
 
 
 ```ts
 import asciimath2latex from 'asciimath-to-latex';
 ```
 
+OR
+
 ```javascript
 const asciimath2latex = require('asciimath-to-latex').default;
 ```
+
+
+## Usage
 
 ```javascript
 const asciimath = '2=(((3-x)xx2)/(3-x))'
